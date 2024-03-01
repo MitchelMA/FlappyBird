@@ -45,7 +45,8 @@ ABirdCharacter::Fly(
 )
 {
 	LaunchCharacter({0, 0, FlyVelocity}, true, true);
-	GEngine->AddOnScreenDebugMessage(-1, 1., FColor::Green, FString::Printf(TEXT("Velocity: %f"), movementComp->Velocity[2]));
+	if (auto movementComp = GetMovementComponent())
+		GEngine->AddOnScreenDebugMessage(-1, 1., FColor::Green, FString::Printf(TEXT("Velocity: %f"), movementComp->Velocity[2]));
 }
 
 void
