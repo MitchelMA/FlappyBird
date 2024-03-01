@@ -10,6 +10,8 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdStartedDelegate);
+
 DECLARE_LOG_CATEGORY_EXTERN(LogBirdCharacter, Log, All);
 
 UCLASS(Blueprintable, BlueprintType)
@@ -26,8 +28,19 @@ class FLAPPYBIRD_API ABirdCharacter : public APaperCharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Flying, meta=(AllowPrivateAccess="true"))
 	float FlyVelocity = 10;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Flying, meta=(AllowPrivateAccess="true"))
+	float VelocityRotationDeg;
+	
+	float TerminalVelocity = 0;
+
+	UFUNCTION()
+	void BirdStarted();
+
 public:
 	ABirdCharacter();
+
+	UPROPERTY(BlueprintAssignable, Category=Events)
+	FBirdStartedDelegate OnBirdStartedDelegate;
 
 protected:
 	virtual void BeginPlay() override;

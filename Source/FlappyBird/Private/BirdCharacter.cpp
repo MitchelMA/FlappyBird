@@ -6,6 +6,8 @@
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "PaperFlipbookComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 
 DEFINE_LOG_CATEGORY(LogBirdCharacter);
@@ -17,11 +19,30 @@ ABirdCharacter::ABirdCharacter()
 }
 
 void
+ABirdCharacter::BirdStarted()
+{
+	GetMovementComponent()->Activate();
+}
+
+
+void
 ABirdCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	OnBirdStartedDelegate.AddDynamic(this, &ABirdCharacter::BirdStarted);
+
+	if(!GConfig->GetFloat(
+		TEXT("/Script/Engine.PhysicsSettings"),
+		TEXT("DefaultTerminalVelocity"),
+		TerminalVelocity,
+		GEngineIni)
+	)
+		UE_LOG(LogBirdCharacter, Error, TEXT("Failed to read terminal velocity"));
+
+	GetMovementComponent()->Deactivate();
+
+	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
@@ -35,6 +56,14 @@ ABirdCharacter::Tick(
 	float DeltaSeconds
 )
 {
+	const auto MovementComp = GetMovementComponent();
+	const auto FallingVelocity = MovementComp->Velocity[2];
+	const auto YRotationPercentage = FallingVelocity / TerminalVelocity;
+	
+	GEngine->AddOnScreenDebugMessage(-1, .05f, FColor::Orange, FString::Printf(TEXT("Velocity: %f"), FallingVelocity));
+
+	if(const auto SpriteComp = GetSprite())
+		SpriteComp->SetRelativeRotation({YRotationPercentage * VelocityRotationDeg, 0, 0});
 }
 
 
@@ -44,9 +73,11 @@ ABirdCharacter::Fly(
 	const FInputActionValue& Value
 )
 {
+	const auto MovementComp = GetMovementComponent();
+	if (!MovementComp->IsActive())
+		OnBirdStartedDelegate.Broadcast();
+	
 	LaunchCharacter({0, 0, FlyVelocity}, true, true);
-	if (auto movementComp = GetMovementComponent())
-		GEngine->AddOnScreenDebugMessage(-1, 1., FColor::Green, FString::Printf(TEXT("Velocity: %f"), movementComp->Velocity[2]));
 }
 
 void
