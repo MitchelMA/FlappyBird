@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,7 +11,7 @@ class FLAPPYBIRD_API AScoreCounter final : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
+	UPROPERTY(BlueprintGetter=GetScore)
 	int64 Score = 0;
 	
 public:	
@@ -28,7 +26,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+
+	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void IncreaseScore(int64 Amount = 1);
+	
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int64 GetScore() const { return Score; }
 
 	UPROPERTY(Category=Events, BlueprintAssignable)
