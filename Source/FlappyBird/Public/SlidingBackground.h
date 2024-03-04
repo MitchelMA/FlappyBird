@@ -10,7 +10,7 @@
 #include "SlidingBackground.generated.h"
 
 UCLASS(Config=game, BlueprintType, Blueprintable)
-class FLAPPYBIRD_API ASlidingBackground : public AActor
+class FLAPPYBIRD_API ASlidingBackground final : public AActor
 {
 	GENERATED_BODY()
 
