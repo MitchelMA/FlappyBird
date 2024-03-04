@@ -22,7 +22,19 @@ void APipeObstacle::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GEngine->AddOnScreenDebugMessage(-1, 5., FColor::Blue, FString::Printf(TEXT("Height: %f"), TopCollisionBox->GetScaledBoxExtent()[2]));
+	const auto TopBoxHeight = TopCollisionBox->GetScaledBoxExtent()[2];
+	const auto BottomBoxHeight = BottomCollisionBox->GetScaledBoxExtent()[2];
+	const auto HalfGapHeight = GapHeight / 2;
+	const auto TotalHeight = TopBoxHeight + BottomBoxHeight + GapHeight;
+
+	DefaultSceneRoot->SetRelativeLocation({0, 5, HeightOffset});
+
+	TopCollisionBox->SetRelativeLocation({0, 0, TopBoxHeight + HalfGapHeight});
+	BottomCollisionBox->SetRelativeLocation({0, 0, -BottomBoxHeight - HalfGapHeight});
+	
+	PassCollisionBox->SetRelativeLocation({GetPassBarrierXPosition(), 0, 0});
+	PassCollisionBox->SetBoxExtent({5, TotalHeight, 5});
+		
 }
 
 APipeObstacle::APipeObstacle()
@@ -86,4 +98,16 @@ APipeObstacle::SetBottomSpriteSource(
 		return;
 
 	BottomPanel->SetSprite(NewSpriteSource);
+}
+
+double
+APipeObstacle::GetPassBarrierXPosition()
+const
+{
+	const auto WidestExtent = fmax(TopCollisionBox->GetScaledBoxExtent()[2],
+		BottomCollisionBox->GetScaledBoxExtent()[2]);
+	const auto XDirection = -DirectionMultiplier[0];
+	const auto PassBarrierWidth = PassCollisionBox->GetScaledBoxExtent()[1];
+
+	return (WidestExtent + PassBarrierWidth) * XDirection;
 }

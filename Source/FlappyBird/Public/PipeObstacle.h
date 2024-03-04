@@ -76,6 +76,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetBottomSpriteSource(UPaperSprite* NewSpriteSource);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetUseTopSpriteForBottom() const { return bMirrorTop; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE double GetPassBarrierXPosition() const;
 };
