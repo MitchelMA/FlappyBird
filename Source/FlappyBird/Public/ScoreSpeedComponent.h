@@ -11,17 +11,17 @@ class AScoreCounter;
 /**
  * 
  */
-UCLASS()
+UCLASS(ClassGroup=(Speed), meta=(BlueprintSpawnableComponent=true))
 class FLAPPYBIRD_API UScoreSpeedComponent : public USpeedComponent
 {
 	GENERATED_BODY()
 
 	TObjectPtr<AScoreCounter> ScoreCounter = nullptr;
 
-	UPROPERTY(Category=Settings, EditAnywhere)
+	UPROPERTY(Category=SpeedSettings, EditAnywhere)
 	float BaseSpeed = 1.f;
 
-	UPROPERTY(Category=Settings, EditAnywhere)
+	UPROPERTY(Category=SpeedSettings, EditAnywhere)
 	float ScoreMultiplier = 1.f;
 	
 	AScoreCounter* GetScoreCounter();

@@ -6,6 +6,7 @@
 class UPaperSprite;
 class UPaperSpriteComponent;
 class UBoxComponent;
+class USpeedComponent;
 
 
 
@@ -19,6 +20,8 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> DefaultSceneRoot = nullptr;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> PipesOffset = nullptr;
 
 	UPROPERTY(Category=Sprite, EditAnywhere,
 		BlueprintSetter=SetTopSpriteSource)
@@ -46,6 +49,10 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> PassCollisionBox = nullptr;
 
+
+	UPROPERTY(Category=Movement, VisibleAnywhere)
+	TObjectPtr<USpeedComponent> SpeedComponent = nullptr;
+
 	
 	UPROPERTY(Category=Sprite, EditAnywhere, AdvancedDisplay,
 		BlueprintGetter=GetUseTopSpriteForBottom)
@@ -54,10 +61,8 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 	UPROPERTY(Category=Movement, EditAnywhere)
 	FVector2D DirectionMultiplier = {-1, 0};
 
-	UPROPERTY(Category=Movement, EditAnywhere)
-	float Speed = 0.1f;
-
-	UPROPERTY(Category=Positioning, EditAnywhere)
+	UPROPERTY(Category=Positioning, EditAnywhere,
+		BlueprintGetter=GetGapHeight, BlueprintSetter=SetGapHeight)
 	float GapHeight = 50.f;
 
 	UPROPERTY(Category=Positioning, EditAnywhere)
@@ -70,6 +75,8 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 public:
 	APipeObstacle();
 
+	virtual void Tick(float DeltaSeconds) override;
+
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetTopSpriteSource(UPaperSprite* NewSpriteSource);
 	
@@ -81,4 +88,14 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE double GetPassBarrierXPosition() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetGapHeight() const { return GapHeight; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetGapHeight(float NewGapHeight);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetHeightOffset() const { return HeightOffset; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetHeightOffset(float NewHeightOffset);
 };

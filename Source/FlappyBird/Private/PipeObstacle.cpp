@@ -2,6 +2,7 @@
 
 #include "PaperSpriteComponent.h"
 #include "Components/BoxComponent.h"
+#include "ScoreSpeedComponent.h"
 
 void
 APipeObstacle::PostEditChangeProperty(
@@ -24,17 +25,13 @@ void APipeObstacle::BeginPlay()
 
 	const auto TopBoxHeight = TopCollisionBox->GetScaledBoxExtent()[2];
 	const auto BottomBoxHeight = BottomCollisionBox->GetScaledBoxExtent()[2];
-	const auto HalfGapHeight = GapHeight / 2;
 	const auto TotalHeight = TopBoxHeight + BottomBoxHeight + GapHeight;
 
-	DefaultSceneRoot->SetRelativeLocation({0, 5, HeightOffset});
-
-	TopCollisionBox->SetRelativeLocation({0, 0, TopBoxHeight + HalfGapHeight});
-	BottomCollisionBox->SetRelativeLocation({0, 0, -BottomBoxHeight - HalfGapHeight});
+	SetGapHeight(GapHeight);
+	SetHeightOffset(HeightOffset);
 	
-	PassCollisionBox->SetRelativeLocation({GetPassBarrierXPosition(), 0, 0});
 	PassCollisionBox->SetBoxExtent({5, TotalHeight, 5});
-		
+	PassCollisionBox->SetRelativeLocation({GetPassBarrierXPosition(), 0, 0});
 }
 
 APipeObstacle::APipeObstacle()
@@ -44,15 +41,19 @@ APipeObstacle::APipeObstacle()
 
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	DefaultSceneRoot->Mobility = EComponentMobility::Movable;
-	DefaultSceneRoot->SetupAttachment(RootComponent);
+	RootComponent = DefaultSceneRoot;
+
+	PipesOffset = CreateDefaultSubobject<USceneComponent>(TEXT("PipesOffset"));
+	PipesOffset->Mobility = EComponentMobility::Movable;
+	PipesOffset->SetupAttachment(DefaultSceneRoot);
 	
 	TopCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TopCollision"));
 	TopCollisionBox->Mobility = EComponentMobility::Movable;
-	TopCollisionBox->SetupAttachment(DefaultSceneRoot);
+	TopCollisionBox->SetupAttachment(PipesOffset);
 	
 	BottomCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BottomCollision"));
 	BottomCollisionBox->Mobility = EComponentMobility::Movable;
-	BottomCollisionBox->SetupAttachment(DefaultSceneRoot);
+	BottomCollisionBox->SetupAttachment(PipesOffset);
 	
 	TopPanel = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("TopPanel"));
 	TopPanel->Mobility = EComponentMobility::Movable;
@@ -66,8 +67,24 @@ APipeObstacle::APipeObstacle()
 	PassCollisionBox->Mobility = EComponentMobility::Movable;
 	PassCollisionBox->SetupAttachment(DefaultSceneRoot);
 
+	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UScoreSpeedComponent>(TEXT("SpeedComponent")));
+
 	SetTopSpriteSource(TopSpriteSource);
 	SetBottomSpriteSource(BottomSpriteSource);
+}
+
+void
+APipeObstacle::Tick(
+	const float DeltaSeconds
+)
+{
+	Super::Tick(DeltaSeconds);
+
+	auto CurrentPosition = GetActorLocation();
+	auto Direction = DirectionMultiplier * SpeedComponent->GetSpeed() * DeltaSeconds;
+	CurrentPosition += {Direction[0], 0, Direction[1]};
+
+	SetActorLocation(CurrentPosition);
 }
 
 void
@@ -104,10 +121,35 @@ double
 APipeObstacle::GetPassBarrierXPosition()
 const
 {
-	const auto WidestExtent = fmax(TopCollisionBox->GetScaledBoxExtent()[2],
-		BottomCollisionBox->GetScaledBoxExtent()[2]);
+	const auto WidestExtent = fmax(TopCollisionBox->GetScaledBoxExtent()[0],
+		BottomCollisionBox->GetScaledBoxExtent()[0]);
 	const auto XDirection = -DirectionMultiplier[0];
-	const auto PassBarrierWidth = PassCollisionBox->GetScaledBoxExtent()[1];
+	const auto PassBarrierWidth = PassCollisionBox->GetScaledBoxExtent()[0];
 
-	return (WidestExtent + PassBarrierWidth) * XDirection;
+	return (WidestExtent + PassBarrierWidth/2) * XDirection;
+}
+
+void
+APipeObstacle::SetGapHeight(
+	const float NewGapHeight
+)
+{
+	GapHeight = NewGapHeight;
+	
+	const auto TopBoxHeight = TopCollisionBox->GetScaledBoxExtent()[2];
+	const auto BottomBoxHeight = BottomCollisionBox->GetScaledBoxExtent()[2];
+	const auto HalfGapHeight = GapHeight / 2;
+
+
+	TopCollisionBox->SetRelativeLocation({0, 0, TopBoxHeight + HalfGapHeight});
+	BottomCollisionBox->SetRelativeLocation({0, 0, -BottomBoxHeight - HalfGapHeight});
+}
+
+void
+APipeObstacle::SetHeightOffset(
+	const float NewHeightOffset
+)
+{
+	HeightOffset = NewHeightOffset;
+	PipesOffset->SetRelativeLocation({0, 5, HeightOffset});
 }

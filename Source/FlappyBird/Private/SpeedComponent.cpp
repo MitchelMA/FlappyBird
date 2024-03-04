@@ -5,6 +5,22 @@
 
 DEFINE_LOG_CATEGORY(LogSpeedComponent)
 
+void
+USpeedComponent::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void
+USpeedComponent::TickComponent(
+	float DeltaTime,
+	ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction
+)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
 double
 USpeedComponent::GetSpeed()
 {

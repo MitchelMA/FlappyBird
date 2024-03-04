@@ -7,6 +7,8 @@
 #include "GameFramework/Actor.h"
 #include "SlidingBackground.generated.h"
 
+class USpeedComponent;
+
 UCLASS(Config=game, BlueprintType, Blueprintable)
 class FLAPPYBIRD_API ASlidingBackground final : public AActor
 {
@@ -16,10 +18,17 @@ class FLAPPYBIRD_API ASlidingBackground final : public AActor
 		BlueprintGetter=GetBackgroundSource, BlueprintSetter=SetBackgroundSource)
 	UPaperSprite* BackgroundSource = nullptr;
 
+	
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> DefaultSceneRoot = nullptr;
 	UPROPERTY()
 	TObjectPtr<UPaperSpriteComponent> PanelZero = nullptr;
 	UPROPERTY()
 	TObjectPtr<UPaperSpriteComponent> PanelOne = nullptr;
+
+	UPROPERTY(Category=Movement, VisibleAnywhere)
+	TObjectPtr<USpeedComponent> SpeedComponent = nullptr;
+	
 
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& e) override;
 	
@@ -31,15 +40,12 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(Category=Settings, EditAnywhere)
-	float SlideSpeed = 0.1;
-
-	UPROPERTY(Category=Settings, EditAnywhere,
+	UPROPERTY(Category=Movement, EditAnywhere,
 		BlueprintSetter=SetDirectionMultiplier)
 	FVector2D DirectionMultiplier = {-1, 0};
 
-	UPROPERTY(Category=Settings, VisibleAnywhere,
-		BlueprintSetter=SetProgression)
+	UPROPERTY(Category=Movement, VisibleAnywhere,
+		BlueprintGetter=GetProgression,BlueprintSetter=SetProgression)
 	float Progression = 0;
 
 public:	
@@ -63,6 +69,9 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetProgression(float NewProgression);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetProgression() const { return Progression; }
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetDirectionMultiplier(FVector2D NewDirectionMultiplier);

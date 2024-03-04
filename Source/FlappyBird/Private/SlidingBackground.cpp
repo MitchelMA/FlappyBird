@@ -1,16 +1,26 @@
 #include "SlidingBackground.h"
 
+#include "ScoreSpeedComponent.h"
+
 // Sets default values
 ASlidingBackground::ASlidingBackground()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
+	RootComponent = DefaultSceneRoot;
+
 	PanelZero = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Panel_0"));
 	PanelZero->Mobility = EComponentMobility::Movable;
+	PanelZero->SetupAttachment(DefaultSceneRoot);
 	
 	PanelOne = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Panel_1"));
 	PanelOne->Mobility = EComponentMobility::Movable;
+	PanelOne->SetupAttachment(DefaultSceneRoot);
+
+	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UScoreSpeedComponent>(TEXT("SpeedComponent")));
+	
 
 	SetBackgroundSource(BackgroundSource);
 }
@@ -19,8 +29,8 @@ void ASlidingBackground::PostEditChangeProperty(FPropertyChangedEvent& e)
 {
 	Super::PostEditChangeProperty(e);
 
-	auto propertyName = e.Property != nullptr ? e.Property->GetFName() : NAME_None;
-	if (propertyName == GET_MEMBER_NAME_CHECKED(ASlidingBackground, BackgroundSource))
+	const auto PropertyName = e.Property != nullptr ? e.Property->GetFName() : NAME_None;
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(ASlidingBackground, BackgroundSource))
 		SetBackgroundSource(BackgroundSource);
 }
 
@@ -41,7 +51,7 @@ ASlidingBackground::Tick(
 {
 	Super::Tick(DeltaTime);
 	
-	Progression += DeltaTime * SlideSpeed;
+	Progression += DeltaTime * SpeedComponent->GetSpeed();
 	Progression = fmod(Progression, 1);
 
 	SetProgression(Progression);
