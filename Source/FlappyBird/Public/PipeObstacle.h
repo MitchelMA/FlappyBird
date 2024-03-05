@@ -10,8 +10,6 @@ class UBoxComponent;
 class USpeedComponent;
 
 
-
-
 /**
  * 
  */
@@ -32,7 +30,7 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 	UPaperSprite* BottomSpriteSource;
 
 	UPROPERTY(Category=Sprite, EditAnywhere, AdvancedDisplay,
-		BlueprintGetter=GetUseTopSpriteForBottom)
+		BlueprintGetter=GetMirrorsTop, BlueprintSetter=SetMirrorsTop)
 	bool bMirrorTop;
 
 	UPROPERTY(Category=Movement, EditAnywhere)
@@ -59,7 +57,8 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 	UPROPERTY(EditAnywhere)
 	TObjectPtr<UBoxComponent> PassCollisionBox = nullptr;
 
-	UPROPERTY(Category=Movement, VisibleAnywhere)
+	UPROPERTY(Category=Movement, VisibleAnywhere, BlueprintReadOnly,
+		meta=(AllowPrivateAccess=true))
 	TObjectPtr<USpeedComponent> SpeedComponent = nullptr;
 
 	// ----- OVERRIDEN METHODS ----- //
@@ -88,7 +87,9 @@ public:
 	FORCEINLINE void SetBottomSpriteSource(UPaperSprite* NewSpriteSource);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE bool GetUseTopSpriteForBottom() const { return bMirrorTop; }
+	FORCEINLINE bool GetMirrorsTop() const { return bMirrorTop; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetMirrorsTop(bool NewValue);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE double GetPassBarrierXPosition() const;

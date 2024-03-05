@@ -21,6 +21,9 @@ AScoreCounter* UScoreSpeedComponent::GetScoreCounter()
 double
 UScoreSpeedComponent::GetSpeed()
 {
+	if (bIsSpeedDisabled)
+		return 0.;
+	
 	const auto CurrentScore = GetScoreCounter()->GetScore();
 	return BaseSpeed + CurrentScore * ScoreMultiplier;
 }

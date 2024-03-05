@@ -21,10 +21,19 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditAnywhere, Category=Settings,
+		BlueprintGetter=GetIsSpeedDisabled, BlueprintSetter=SetIsSpeedDisabled)
+	bool bIsSpeedDisabled = false;
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable)
 	virtual FORCEINLINE double GetSpeed();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE bool GetIsSpeedDisabled() const noexcept { return bIsSpeedDisabled; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetIsSpeedDisabled(const bool IsDisabled) { bIsSpeedDisabled = IsDisabled; }
 };

@@ -17,6 +17,9 @@ APipeObstacle::PostEditChangeProperty(
 
 	if (PropertyName == GET_MEMBER_NAME_CHECKED(APipeObstacle, BottomSpriteSource) && BottomPanel != nullptr)
 		SetBottomSpriteSource(BottomSpriteSource);
+
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(APipeObstacle, bMirrorTop))
+		SetMirrorsTop(bMirrorTop);
 }
 
 void APipeObstacle::BeginPlay()
@@ -110,7 +113,9 @@ APipeObstacle::SetTopSpriteSource(
 
 	if (!bMirrorTop || BottomPanel == nullptr)
 		return;
-	
+
+	TopSpriteSource = NewSpriteSource;
+	BottomSpriteSource = NewSpriteSource;
 	BottomPanel->SetSprite(NewSpriteSource);
 
 	const auto TopPanelRot = TopPanel->GetRelativeRotation();
@@ -127,7 +132,19 @@ APipeObstacle::SetBottomSpriteSource(
 	if (BottomPanel == nullptr || bMirrorTop)
 		return;
 
+	BottomSpriteSource = NewSpriteSource;
 	BottomPanel->SetSprite(NewSpriteSource);
+}
+
+void
+APipeObstacle::SetMirrorsTop(
+	const bool NewValue
+)
+{
+	bMirrorTop = NewValue;
+	
+	SetTopSpriteSource(TopSpriteSource);
+	SetBottomSpriteSource(BottomSpriteSource);
 }
 
 double
