@@ -21,9 +21,9 @@ class FLAPPYBIRD_API ASlidingBackground final : public AActor
 	
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> DefaultSceneRoot = nullptr;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPaperSpriteComponent> PanelZero = nullptr;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPaperSpriteComponent> PanelOne = nullptr;
 
 	UPROPERTY(Category=Movement, VisibleAnywhere)

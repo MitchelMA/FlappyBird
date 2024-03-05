@@ -34,5 +34,5 @@ public:
 	FORCEINLINE int64 GetScore() const { return Score; }
 
 	UPROPERTY(Category=Events, BlueprintAssignable)
-	FScoreIncreasedDelegate OnScoreIncreased;
+	FScoreIncreasedDelegate OnScoreIncreasedDelegate;
 };

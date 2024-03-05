@@ -12,6 +12,12 @@ DEFINE_LOG_CATEGORY(LogBirdCharacter);
 ABirdCharacter::ABirdCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	CapsuleColliderTrigger = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleTrigger"));
+	CapsuleColliderTrigger->SetupAttachment(RootComponent);
+	CapsuleColliderTrigger->InitCapsuleSize(8., 11.);
+	CapsuleColliderTrigger->SetCollisionProfileName(TEXT("Trigger"));
+	
 	GetCapsuleComponent()->InitCapsuleSize(8., 8.);
 }
 
@@ -21,6 +27,82 @@ ABirdCharacter::BirdStarted()
 	GetMovementComponent()->Activate();
 }
 
+void
+ABirdCharacter::ColliderBeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	const int32 OtherBodyIndex,
+	const bool bFromSweep,
+	const FHitResult& SweepResult
+)
+{
+	for (const auto Name : OtherComp->ComponentTags)
+	{
+		if (DeathTags.Contains(Name))
+			OnBirdDiedDelegate.Broadcast();
+
+		if (ObstaclePassedTags.Contains(Name) && !bIsBirdDead)
+			OnBirdPassedObstacleDelegate.Broadcast();
+	}
+}
+
+void
+ABirdCharacter::ColliderHit(
+	UPrimitiveComponent* HitComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	const FVector NormalImpulse,
+	const FHitResult& Hit)
+{
+	for (const auto Name : OtherComp->ComponentTags)
+	{
+		if (DeathTags.Contains(Name))
+			OnBirdDiedDelegate.Broadcast();
+
+		if (GroundTags.Contains(Name))
+			OnBirdHitGroundDelegate.Broadcast();
+	}
+}
+
+void
+ABirdCharacter::ColliderTriggerBeginOverlap(
+	UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	const int32 OtherBodyIndex,
+	const bool bFromSweep,
+	const FHitResult& SweepResult
+)
+{
+	for (const auto Name : OtherComp->ComponentTags)
+	{
+		if (!GroundTags.Contains(Name))
+			continue;
+
+		OnBirdHitGroundDelegate.Broadcast();
+	}
+	
+}
+
+void
+ABirdCharacter::BirdDied()
+{
+	if (bIsBirdDead)
+		return;
+	
+	bIsBirdDead = true;
+}
+
+void
+ABirdCharacter::BirdHitGround()
+{
+	if (bIsBirdOnGround)
+		return;
+	
+	bIsBirdOnGround = true;
+}
+
 
 void
 ABirdCharacter::BeginPlay()
@@ -28,6 +110,12 @@ ABirdCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	OnBirdStartedDelegate.AddDynamic(this, &ABirdCharacter::BirdStarted);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ABirdCharacter::ColliderBeginOverlap);
+	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ABirdCharacter::ColliderHit);
+	CapsuleColliderTrigger->OnComponentBeginOverlap.AddDynamic(this, &ABirdCharacter::ColliderTriggerBeginOverlap);
+
+	OnBirdDiedDelegate.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdDied);
+	OnBirdHitGroundDelegate.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdHitGround);
 
 	if(!GConfig->GetFloat(
 		TEXT("/Script/Engine.PhysicsSettings"),
@@ -53,6 +141,9 @@ ABirdCharacter::Tick(
 	float DeltaSeconds
 )
 {
+	if (bIsBirdOnGround)
+		return;
+	
 	const auto MovementComp = GetMovementComponent();
 	const auto FallingVelocity = MovementComp->Velocity[2];
 	const auto YRotationPercentage = FallingVelocity / TerminalVelocity;
@@ -70,11 +161,14 @@ ABirdCharacter::Fly(
 	const FInputActionValue& Value
 )
 {
+	if (bIsBirdDead)
+		return;
+	
 	const auto MovementComp = GetMovementComponent();
 	if (!MovementComp->IsActive())
 		OnBirdStartedDelegate.Broadcast();
-	
-	LaunchCharacter({0, 0, FlyVelocity}, true, true);
+
+	LaunchCharacter({0, 0, FlyVelocity}, false, true);
 }
 
 void
@@ -86,9 +180,10 @@ ABirdCharacter::SetupPlayerInputComponent(
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		// jumping action
+		// flying action
 		EnhancedInputComponent->BindAction(FlyAction, ETriggerEvent::Triggered, this, &ABirdCharacter::Fly);
 		UE_LOG(LogBirdCharacter, Log, TEXT("Successfully setup input components"));
+
 	}
 	else
 	{

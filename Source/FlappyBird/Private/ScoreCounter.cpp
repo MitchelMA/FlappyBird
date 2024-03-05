@@ -33,5 +33,5 @@ AScoreCounter::IncreaseScore(
 		return;
 	
 	Score += Amount;
-	OnScoreIncreased.Broadcast(Score, Amount);
+	OnScoreIncreasedDelegate.Broadcast(Score, Amount);
 }

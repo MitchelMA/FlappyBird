@@ -14,10 +14,12 @@ ASlidingBackground::ASlidingBackground()
 	PanelZero = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Panel_0"));
 	PanelZero->Mobility = EComponentMobility::Movable;
 	PanelZero->SetupAttachment(DefaultSceneRoot);
+	PanelZero->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	
 	PanelOne = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Panel_1"));
 	PanelOne->Mobility = EComponentMobility::Movable;
 	PanelOne->SetupAttachment(DefaultSceneRoot);
+	PanelOne->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UScoreSpeedComponent>(TEXT("SpeedComponent")));
 	
