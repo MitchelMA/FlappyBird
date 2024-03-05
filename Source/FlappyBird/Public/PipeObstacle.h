@@ -1,12 +1,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Containers/Map.h"
 #include "PipeObstacle.generated.h"
 
 class UPaperSprite;
 class UPaperSpriteComponent;
 class UBoxComponent;
 class USpeedComponent;
+
 
 
 
@@ -18,42 +20,17 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> DefaultSceneRoot = nullptr;
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> PipesOffset = nullptr;
+	// ----- PROPERTIES ----- //
 
 	UPROPERTY(Category=Sprite, EditAnywhere,
 		BlueprintSetter=SetTopSpriteSource)
 	UPaperSprite* TopSpriteSource;
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UPaperSpriteComponent> TopPanel = nullptr;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UBoxComponent> TopCollisionBox = nullptr;
-	
 
 	UPROPERTY(Category=Sprite, EditAnywhere,
 		BlueprintSetter=SetBottomSpriteSource,
 		meta=(EditCondition="!bMirrorTop", EditConditionHides=true))
 	UPaperSprite* BottomSpriteSource;
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UPaperSpriteComponent> BottomPanel = nullptr;
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UBoxComponent> BottomCollisionBox = nullptr;
-
-
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UBoxComponent> PassCollisionBox = nullptr;
-
-
-	UPROPERTY(Category=Movement, VisibleAnywhere)
-	TObjectPtr<USpeedComponent> SpeedComponent = nullptr;
-
-	
 	UPROPERTY(Category=Sprite, EditAnywhere, AdvancedDisplay,
 		BlueprintGetter=GetUseTopSpriteForBottom)
 	bool bMirrorTop;
@@ -68,14 +45,41 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 	UPROPERTY(Category=Positioning, EditAnywhere)
 	float HeightOffset = 0.f;
 
+	// ----- COMPONENTS ----- //
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> DefaultSceneRoot = nullptr;
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> PipesOffset = nullptr;
+
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UPaperSpriteComponent> TopPanel = nullptr;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UPaperSpriteComponent> BottomPanel = nullptr;
+	UPROPERTY(EditAnywhere)
+	TObjectPtr<UBoxComponent> PassCollisionBox = nullptr;
+
+	UPROPERTY(Category=Movement, VisibleAnywhere)
+	TObjectPtr<USpeedComponent> SpeedComponent = nullptr;
+
+	// ----- OVERRIDEN METHODS ----- //
+
+
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
 
 	virtual void BeginPlay() override;
+
+	// ----- UTILITY METHODS ----- //
+	
+	FORCEINLINE TPair<UE::Math::TVector<double>, UE::Math::TVector<double>> GetPipeExtends() const noexcept;
+	FORCEINLINE TPair<UE::Math::TVector<double>, UE::Math::TVector<double>> GetPipeSizes() const noexcept;
 
 public:
 	APipeObstacle();
 
 	virtual void Tick(float DeltaSeconds) override;
+
+	// ----- BLUEPRINT CALLABLES ----- //
 
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE void SetTopSpriteSource(UPaperSprite* NewSpriteSource);

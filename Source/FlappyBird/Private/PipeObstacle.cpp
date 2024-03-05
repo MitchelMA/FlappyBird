@@ -23,15 +23,36 @@ void APipeObstacle::BeginPlay()
 {
 	Super::BeginPlay();
 
-	const auto TopBoxHeight = TopCollisionBox->GetScaledBoxExtent()[2];
-	const auto BottomBoxHeight = BottomCollisionBox->GetScaledBoxExtent()[2];
-	const auto TotalHeight = TopBoxHeight + BottomBoxHeight + GapHeight;
+	const auto [TopExtend, BottomExtend] = GetPipeExtends();
+	const auto TopBoxHeight = TopExtend[2];
+	const auto BottomBoxHeight = BottomExtend[2];
+	const auto TotalHeight = TopBoxHeight + BottomBoxHeight + GapHeight/2;
 
 	SetGapHeight(GapHeight);
 	SetHeightOffset(HeightOffset);
 	
-	PassCollisionBox->SetBoxExtent({5, TotalHeight, 5});
+	PassCollisionBox->SetBoxExtent({10, 10, TotalHeight});
 	PassCollisionBox->SetRelativeLocation({GetPassBarrierXPosition(), 0, 0});
+}
+
+TPair<UE::Math::TVector<double>, UE::Math::TVector<double>>
+APipeObstacle::GetPipeExtends()
+const noexcept
+{
+	const auto TopExtend = TopPanel->Bounds.GetBox().GetExtent();
+	const auto BottomExtend = BottomPanel->Bounds.GetBox().GetExtent();
+	
+	return {TopExtend, BottomExtend};
+}
+
+TPair<UE::Math::TVector<double>, UE::Math::TVector<double>>
+APipeObstacle::GetPipeSizes()
+const noexcept
+{
+	const auto TopSize = TopPanel->Bounds.GetBox().GetSize();
+	const auto BottomSize = BottomPanel->Bounds.GetBox().GetSize();
+
+	return {TopSize, BottomSize};
 }
 
 APipeObstacle::APipeObstacle()
@@ -47,21 +68,13 @@ APipeObstacle::APipeObstacle()
 	PipesOffset->Mobility = EComponentMobility::Movable;
 	PipesOffset->SetupAttachment(DefaultSceneRoot);
 	
-	TopCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TopCollision"));
-	TopCollisionBox->Mobility = EComponentMobility::Movable;
-	TopCollisionBox->SetupAttachment(PipesOffset);
-	
-	BottomCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("BottomCollision"));
-	BottomCollisionBox->Mobility = EComponentMobility::Movable;
-	BottomCollisionBox->SetupAttachment(PipesOffset);
-	
 	TopPanel = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("TopPanel"));
 	TopPanel->Mobility = EComponentMobility::Movable;
-	TopPanel->SetupAttachment(TopCollisionBox);
+	TopPanel->SetupAttachment(PipesOffset);
 	
 	BottomPanel = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("BottomPanel"));
 	BottomPanel->Mobility = EComponentMobility::Movable;
-	BottomPanel->SetupAttachment(BottomCollisionBox);
+	BottomPanel->SetupAttachment(PipesOffset);
 
 	PassCollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PassCollisionBox"));
 	PassCollisionBox->Mobility = EComponentMobility::Movable;
@@ -121,8 +134,8 @@ double
 APipeObstacle::GetPassBarrierXPosition()
 const
 {
-	const auto WidestExtent = fmax(TopCollisionBox->GetScaledBoxExtent()[0],
-		BottomCollisionBox->GetScaledBoxExtent()[0]);
+	const auto [TopExtend, BottomExtend] = GetPipeExtends();
+	const auto WidestExtent = fmax(TopExtend[0], BottomExtend[0]);
 	const auto XDirection = -DirectionMultiplier[0];
 	const auto PassBarrierWidth = PassCollisionBox->GetScaledBoxExtent()[0];
 
@@ -135,14 +148,14 @@ APipeObstacle::SetGapHeight(
 )
 {
 	GapHeight = NewGapHeight;
-	
-	const auto TopBoxHeight = TopCollisionBox->GetScaledBoxExtent()[2];
-	const auto BottomBoxHeight = BottomCollisionBox->GetScaledBoxExtent()[2];
+
+	const auto [TopExtend, BottomExtend] = GetPipeExtends();
+	const auto TopBoxHeight = TopExtend[2];
+	const auto BottomBoxHeight = BottomExtend[2];
 	const auto HalfGapHeight = GapHeight / 2;
 
-
-	TopCollisionBox->SetRelativeLocation({0, 0, TopBoxHeight + HalfGapHeight});
-	BottomCollisionBox->SetRelativeLocation({0, 0, -BottomBoxHeight - HalfGapHeight});
+	TopPanel->SetRelativeLocation({0, 0, TopBoxHeight + HalfGapHeight});
+	BottomPanel->SetRelativeLocation({0, 0, -BottomBoxHeight - HalfGapHeight});
 }
 
 void
