@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
@@ -32,4 +30,19 @@ class FLAPPYBIRD_API UScoreSpeedComponent : public USpeedComponent
 public:
 
 	virtual double GetSpeed() override;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetBaseSpeed() const noexcept { return BaseSpeed; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetBaseSpeed(const float NewBaseSpeed) noexcept { BaseSpeed = NewBaseSpeed; };
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetScoreMultiplier() const noexcept { return ScoreMultiplier; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetScoreMultiplier(const float NewScoreMultiplier) { ScoreMultiplier = NewScoreMultiplier; }
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FORCEINLINE float GetScaleMultiplier() const noexcept { return ScaleMultiplier; }
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetScaleMultiplier(const float NewScaleMultiplier) { ScaleMultiplier = NewScaleMultiplier; }
 };
