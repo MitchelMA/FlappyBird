@@ -25,5 +25,5 @@ UScoreSpeedComponent::GetSpeed()
 		return 0.;
 	
 	const auto CurrentScore = GetScoreCounter()->GetScore();
-	return BaseSpeed + CurrentScore * ScoreMultiplier;
+	return (BaseSpeed + CurrentScore * ScoreMultiplier) * ScaleMultiplier;
 }

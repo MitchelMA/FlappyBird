@@ -18,9 +18,12 @@ class FLAPPYBIRD_API ASlidingBackground final : public AActor
 		BlueprintGetter=GetBackgroundSource, BlueprintSetter=SetBackgroundSource)
 	UPaperSprite* BackgroundSource = nullptr;
 
-	
+
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> DefaultSceneRoot = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> PanelOffset = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPaperSpriteComponent> PanelZero = nullptr;
 	UPROPERTY(VisibleAnywhere)
@@ -42,7 +45,7 @@ protected:
 
 	UPROPERTY(Category=Movement, EditAnywhere,
 		BlueprintSetter=SetDirectionMultiplier)
-	FVector2D DirectionMultiplier = {-1, 0};
+	float HorizontalDirectionMultiplier = -1;
 
 	UPROPERTY(Category=Movement, VisibleAnywhere,
 		BlueprintGetter=GetProgression,BlueprintSetter=SetProgression)
@@ -74,5 +77,5 @@ public:
 	FORCEINLINE float GetProgression() const { return Progression; }
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetDirectionMultiplier(FVector2D NewDirectionMultiplier);
+	FORCEINLINE void SetDirectionMultiplier(float NewDirectionMultiplier);
 };

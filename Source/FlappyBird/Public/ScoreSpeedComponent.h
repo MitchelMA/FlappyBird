@@ -23,6 +23,9 @@ class FLAPPYBIRD_API UScoreSpeedComponent : public USpeedComponent
 
 	UPROPERTY(Category=SpeedSettings, EditAnywhere)
 	float ScoreMultiplier = 1.f;
+
+	UPROPERTY(Category=SpeedSettings, EditAnywhere)
+	float ScaleMultiplier = 1.f;
 	
 	AScoreCounter* GetScoreCounter();
 	

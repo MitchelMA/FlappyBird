@@ -1,5 +1,6 @@
 #include "SlidingBackground.h"
 
+#include "IMessageTracer.h"
 #include "ScoreSpeedComponent.h"
 
 // Sets default values
@@ -11,14 +12,17 @@ ASlidingBackground::ASlidingBackground()
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	RootComponent = DefaultSceneRoot;
 
+	PanelOffset = CreateDefaultSubobject<USceneComponent>(TEXT("Panel Offset"));
+	PanelOffset->SetupAttachment(DefaultSceneRoot);
+
 	PanelZero = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Panel_0"));
 	PanelZero->Mobility = EComponentMobility::Movable;
-	PanelZero->SetupAttachment(DefaultSceneRoot);
+	PanelZero->SetupAttachment(PanelOffset);
 	PanelZero->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	
 	PanelOne = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Panel_1"));
 	PanelOne->Mobility = EComponentMobility::Movable;
-	PanelOne->SetupAttachment(DefaultSceneRoot);
+	PanelOne->SetupAttachment(PanelOffset);
 	PanelOne->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UScoreSpeedComponent>(TEXT("SpeedComponent")));
@@ -52,8 +56,9 @@ ASlidingBackground::Tick(
 )
 {
 	Super::Tick(DeltaTime);
-	
-	Progression += DeltaTime * SpeedComponent->GetSpeed();
+
+	const auto NextXOffset = PanelOffset->GetRelativeLocation()[0] + DeltaTime * HorizontalDirectionMultiplier * SpeedComponent->GetSpeed();
+	Progression = fabs(NextXOffset) / GetPanelSize()[0];
 	Progression = fmod(Progression, 1);
 
 	SetProgression(Progression);
@@ -85,23 +90,29 @@ ASlidingBackground::SetProgression(
 		return;
 	
 	Progression = NewProgression;
+	const auto PanelSize = GetPanelSize();
+	const auto CurrentPanelPos = PanelOffset->GetRelativeLocation();
+	const auto Offset = PanelSize[0] * HorizontalDirectionMultiplier * Progression;
+
+	PanelOffset->SetRelativeLocation({Offset, CurrentPanelPos[1], CurrentPanelPos[2]});
 	
-	auto dimensions = GetPanelSize();
-	auto yPos = PanelZero->GetRelativeLocation()[1];
-	auto baseOffset = dimensions * DirectionMultiplier;
-	
-	auto offsetPanelZero = baseOffset * Progression;
-	auto offsetPanelOne = baseOffset * Progression - baseOffset;
-	
-	PanelZero->SetRelativeLocation({offsetPanelZero[0], yPos, offsetPanelZero[1]});
-	PanelOne->SetRelativeLocation({offsetPanelOne[0], yPos, offsetPanelOne[1]});
+	//
+	// auto dimensions = GetPanelSize();
+	// auto yPos = PanelZero->GetRelativeLocation()[1];
+	// auto baseOffset = dimensions * DirectionMultiplier;
+	//
+	// auto offsetPanelZero = baseOffset * Progression;
+	// auto offsetPanelOne = baseOffset * Progression - baseOffset;
+	//
+	// PanelZero->SetRelativeLocation({offsetPanelZero[0], yPos, offsetPanelZero[1]});
+	// PanelOne->SetRelativeLocation({offsetPanelOne[0], yPos, offsetPanelOne[1]});
 }
 
 void
 ASlidingBackground::SetDirectionMultiplier(
-	const FVector2D NewDirectionMultiplier
+	const float NewDirectionMultiplier
 )
 {
-	DirectionMultiplier = NewDirectionMultiplier;
+	HorizontalDirectionMultiplier = NewDirectionMultiplier;
 	SetProgression(Progression);
 }
