@@ -77,6 +77,11 @@ ASlidingBackground::SetBackgroundSource(
 	PanelZero->SetSprite(BackgroundSource);
 	PanelOne->SetSprite(BackgroundSource);
 
+	const auto PanelZeroPos = PanelZero->GetRelativeLocation();
+	const auto XOffset = GetPanelSize()[0] * -HorizontalDirectionMultiplier;
+	PanelOne->SetRelativeLocation({PanelZeroPos[0] + XOffset, PanelZeroPos[1], PanelZeroPos[2]});
+	
+
 	// reset the current progression
 	SetProgression(0);
 }
