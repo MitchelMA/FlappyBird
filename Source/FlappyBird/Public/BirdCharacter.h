@@ -43,6 +43,7 @@ class FLAPPYBIRD_API ABirdCharacter final : public APaperCharacter
 	TArray<FName> GroundTags;
 
 	float TerminalVelocity = 0;
+	UPROPERTY(BlueprintGetter=GetIsBirdDead)
 	bool bIsBirdDead = false;
 	bool bIsBirdOnGround = false;
 
@@ -86,4 +87,7 @@ protected:
 	void Fly(const FInputActionValue& Value);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+	UFUNCTION(Blueprintable, BlueprintPure)
+	FORCEINLINE bool GetIsBirdDead() const noexcept { return bIsBirdDead; }
 };
