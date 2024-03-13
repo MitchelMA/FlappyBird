@@ -29,6 +29,9 @@ class FLAPPYBIRD_API ABirdCharacter final : public APaperCharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
 	UInputAction* FlyAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
+	UInputAction* ResetAction;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Flying, meta=(AllowPrivateAccess="true"))
 	float FlyVelocity = 10;
 
@@ -85,6 +88,7 @@ protected:
 	virtual void Tick(float DeltaSeconds) override;
 	
 	void Fly(const FInputActionValue& Value);
+	void ResetCallback(const FInputActionValue& Value);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 

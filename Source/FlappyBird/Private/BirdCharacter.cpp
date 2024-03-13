@@ -4,8 +4,10 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "PaperFlipbookComponent.h"
+#include "ResetInstigator.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogBirdCharacter);
 
@@ -61,7 +63,10 @@ ABirdCharacter::ColliderHit(
 			OnBirdDiedDelegate.Broadcast();
 
 		if (GroundTags.Contains(Name))
+		{
 			OnBirdHitGroundDelegate.Broadcast();
+			OnBirdDiedDelegate.Broadcast();
+		}
 	}
 }
 
@@ -81,6 +86,7 @@ ABirdCharacter::ColliderTriggerBeginOverlap(
 			continue;
 
 		OnBirdHitGroundDelegate.Broadcast();
+		OnBirdDiedDelegate.Broadcast();
 	}
 	
 }
@@ -92,6 +98,7 @@ ABirdCharacter::BirdDied()
 		return;
 	
 	bIsBirdDead = true;
+	GetSprite()->Stop();
 }
 
 void
@@ -172,6 +179,22 @@ ABirdCharacter::Fly(
 }
 
 void
+ABirdCharacter::ResetCallback(
+	const FInputActionValue& Value
+)
+{
+	if (!bIsBirdDead)
+		return;
+	
+	const auto ResetActor = UGameplayStatics::GetActorOfClass(GetWorld(), AResetInstigator::StaticClass());
+	if (ResetActor == nullptr)
+		return;
+
+	if (const auto ResetInstigator = Cast<AResetInstigator>(ResetActor); ResetInstigator != nullptr)
+		ResetInstigator->ResetAll();
+}
+
+void
 ABirdCharacter::SetupPlayerInputComponent(
 	UInputComponent* PlayerInputComponent
 )
@@ -182,6 +205,9 @@ ABirdCharacter::SetupPlayerInputComponent(
 	{
 		// flying action
 		EnhancedInputComponent->BindAction(FlyAction, ETriggerEvent::Triggered, this, &ABirdCharacter::Fly);
+		// Reset Action
+		EnhancedInputComponent->BindAction(ResetAction, ETriggerEvent::Triggered, this, &ABirdCharacter::ResetCallback);
+		
 		UE_LOG(LogBirdCharacter, Log, TEXT("Successfully setup input components"));
 
 	}

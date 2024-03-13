@@ -13,9 +13,11 @@ AObstacleSpawner::AObstacleSpawner()
 	PrimaryActorTick.bCanEverTick = true;
 
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Default Scene Root"));
+	DefaultSceneRoot->Mobility = EComponentMobility::Static;
 	RootComponent = DefaultSceneRoot;
 
 	SpawnTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("Spawn Trigger"));
+	SpawnTrigger->Mobility = EComponentMobility::Static;
 	SpawnTrigger->SetupAttachment(DefaultSceneRoot);
 
 }
