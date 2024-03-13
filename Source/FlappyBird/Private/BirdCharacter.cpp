@@ -155,7 +155,7 @@ ABirdCharacter::Tick(
 	const auto FallingVelocity = MovementComp->Velocity[2];
 	const auto YRotationPercentage = FallingVelocity / TerminalVelocity;
 	
-	GEngine->AddOnScreenDebugMessage(-1, .05f, FColor::Orange, FString::Printf(TEXT("Velocity: %f"), FallingVelocity));
+	// GEngine->AddOnScreenDebugMessage(-1, .05f, FColor::Orange, FString::Printf(TEXT("Velocity: %f"), FallingVelocity));
 
 	if(const auto SpriteComp = GetSprite())
 		SpriteComp->SetRelativeRotation({YRotationPercentage * VelocityRotationDeg, 0, 0});
