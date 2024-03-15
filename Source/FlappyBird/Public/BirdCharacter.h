@@ -11,7 +11,9 @@ struct FInputActionValue;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdStartedDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdDiedDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdPassedObstacleDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdHitObstacleDelegate);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdHitGroundDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdFlapDelegate);
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBirdCharacter, Log, All);
 
@@ -43,7 +45,9 @@ class FLAPPYBIRD_API ABirdCharacter final : public APaperCharacter
 	UPROPERTY(EditAnywhere, Category=Collision)
 	TArray<FName> ObstaclePassedTags;
 	UPROPERTY(EditAnywhere, Category=Collision)
-	TArray<FName> GroundTags;
+	TArray<FName> GroundHitTags;
+	UPROPERTY(EditAnywhere, Category=Collision)
+	TArray<FName> ObstacleHitTags;
 
 	float TerminalVelocity = 0;
 	UPROPERTY(BlueprintGetter=GetIsBirdDead)
@@ -80,7 +84,11 @@ public:
 	UPROPERTY(BlueprintAssignable, Category=Events)
 	FBirdPassedObstacleDelegate OnBirdPassedObstacleDelegate;
 	UPROPERTY(BlueprintAssignable, Category=Events)
+	FBirdHitObstacleDelegate OnBirdHitObstacleDelegate;
+	UPROPERTY(BlueprintAssignable, Category=Events)
 	FBirdHitGroundDelegate OnBirdHitGroundDelegate;
+	UPROPERTY(BlueprintAssignable, Category=Events)
+	FBirdFlapDelegate OnBirdFlapDelegate;
 
 protected:
 	virtual void BeginPlay() override;

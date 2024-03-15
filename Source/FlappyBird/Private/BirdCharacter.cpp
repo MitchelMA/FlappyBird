@@ -39,13 +39,29 @@ ABirdCharacter::ColliderBeginOverlap(
 	const FHitResult& SweepResult
 )
 {
+	bool bCastedDeath = false;
+	bool bCastedObstacleHit = false;
+	bool bCastedObstaclePass = false;
+	
 	for (const auto Name : OtherComp->ComponentTags)
 	{
-		if (DeathTags.Contains(Name))
+		if (DeathTags.Contains(Name) && !bCastedDeath && !bIsBirdDead)
+		{
 			OnBirdDiedDelegate.Broadcast();
+			bCastedDeath = true;
+		}
 
-		if (ObstaclePassedTags.Contains(Name) && !bIsBirdDead)
+		if (ObstacleHitTags.Contains(Name) && !bCastedObstacleHit)
+		{
+			OnBirdHitObstacleDelegate.Broadcast();
+			bCastedObstacleHit = true;
+		}
+
+		if (ObstaclePassedTags.Contains(Name) && !bCastedObstaclePass && !bIsBirdDead)
+		{
 			OnBirdPassedObstacleDelegate.Broadcast();
+			bCastedObstaclePass = true;
+		}
 	}
 }
 
@@ -57,15 +73,28 @@ ABirdCharacter::ColliderHit(
 	const FVector NormalImpulse,
 	const FHitResult& Hit)
 {
+	bool bCastedDeath = false;
+	bool bCastedObstacleHit = false;
+	bool bCastedGroundHit = false;
+	
 	for (const auto Name : OtherComp->ComponentTags)
 	{
-		if (DeathTags.Contains(Name))
+		if (DeathTags.Contains(Name) && !bCastedDeath && !bIsBirdDead)
+		{
 			OnBirdDiedDelegate.Broadcast();
+			bCastedDeath = true;
+		}
 
-		if (GroundTags.Contains(Name))
+		if (ObstacleHitTags.Contains(Name) && !bCastedObstacleHit)
+		{
+			OnBirdHitObstacleDelegate.Broadcast();
+			bCastedObstacleHit = true;
+		}
+
+		if (GroundHitTags.Contains(Name) && !bCastedGroundHit)
 		{
 			OnBirdHitGroundDelegate.Broadcast();
-			OnBirdDiedDelegate.Broadcast();
+			bCastedGroundHit = true;
 		}
 	}
 }
@@ -80,15 +109,17 @@ ABirdCharacter::ColliderTriggerBeginOverlap(
 	const FHitResult& SweepResult
 )
 {
+	bool bCastedGroundHit = false;
+	
 	for (const auto Name : OtherComp->ComponentTags)
 	{
-		if (!GroundTags.Contains(Name))
+		if (!GroundHitTags.Contains(Name) || bCastedGroundHit || bIsBirdDead)
 			continue;
-
-		OnBirdHitGroundDelegate.Broadcast();
+		
 		OnBirdDiedDelegate.Broadcast();
+		OnBirdHitGroundDelegate.Broadcast();
+		bCastedGroundHit = true;
 	}
-	
 }
 
 void
@@ -176,6 +207,7 @@ ABirdCharacter::Fly(
 		OnBirdStartedDelegate.Broadcast();
 
 	LaunchCharacter({0, 0, FlyVelocity}, false, true);
+	OnBirdFlapDelegate.Broadcast();
 }
 
 void
