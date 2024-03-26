@@ -43,17 +43,17 @@ public:
 	virtual double GetSpeed() override;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE float GetBaseSpeed() const noexcept; 
+	float GetBaseSpeed() const noexcept; 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetBaseSpeed(const float NewBaseSpeed) noexcept;
+	void SetBaseSpeed(const float NewBaseSpeed) noexcept;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE float GetScoreAddition() const noexcept;
+	float GetScoreAddition() const noexcept;
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetScoreAddition(const float NewScoreAddition) noexcept; 
+	void SetScoreAddition(const float NewScoreAddition) noexcept; 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE float GetScaleMultiplier() const noexcept;
+	float GetScaleMultiplier() const noexcept;
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetScaleMultiplier(const float NewScaleMultiplier) noexcept; 
+	void SetScaleMultiplier(const float NewScaleMultiplier) noexcept; 
 };

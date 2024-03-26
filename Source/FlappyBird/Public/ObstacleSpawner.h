@@ -40,5 +40,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE AActor* SpawnPipe() noexcept;
+	AActor* SpawnPipe() noexcept;
 };
