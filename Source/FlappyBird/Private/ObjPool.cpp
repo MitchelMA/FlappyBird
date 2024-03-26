@@ -3,7 +3,12 @@
 
 #include "ObjPool.h"
 
-void AObjPool::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+#if WITH_EDITOR
+
+void
+AObjPool::PostEditChangeProperty(
+	FPropertyChangedEvent& PropertyChangedEvent
+)
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
@@ -14,6 +19,8 @@ void AObjPool::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEven
 			ActorType = nullptr;
 	}
 }
+
+#endif // WITH_EDITOR
 
 // Sets default values
 AObjPool::AObjPool()

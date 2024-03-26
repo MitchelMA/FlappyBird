@@ -4,6 +4,8 @@
 #include "Components/BoxComponent.h"
 #include "ScoreSpeedComponent.h"
 
+#if WITH_EDITOR
+
 void
 APipeObstacle::PostEditChangeProperty(
 	FPropertyChangedEvent& PropertyChangedEvent
@@ -21,6 +23,8 @@ APipeObstacle::PostEditChangeProperty(
 	if (PropertyName == GET_MEMBER_NAME_CHECKED(APipeObstacle, bMirrorTop))
 		SetMirrorsTop(bMirrorTop);
 }
+
+#endif // WITH_EDITOR
 
 void APipeObstacle::BeginPlay()
 {

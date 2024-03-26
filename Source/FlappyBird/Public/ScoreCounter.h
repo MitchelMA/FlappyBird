@@ -9,7 +9,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FScoreIncreasedDelegate, int64, Tot
 class UTextRenderComponent;
 
 UCLASS(Blueprintable, BlueprintType)
-class FLAPPYBIRD_API AScoreCounter final : public AActor
+class FLAPPYBIRD_API AScoreCounter : public AActor
 {
 	GENERATED_BODY()
 

@@ -1,9 +1,6 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "ObjPool.generated.h"
 
 UCLASS(Blueprintable, BlueprintType)
@@ -16,7 +13,9 @@ class FLAPPYBIRD_API AObjPool : public AActor
 	UPROPERTY(EditAnywhere, Category=Settings)
 	UClass* ActorType = nullptr;
 
+#if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif // WITH_EDITOR
 	
 public:	
 	// Sets default values for this actor's properties
@@ -31,9 +30,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE AActor* RequestObject(const FVector& SpawnLocation) noexcept;
+	AActor* RequestObject(const FVector& SpawnLocation) noexcept;
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool StoreObject(AActor* Object) noexcept;
+	bool StoreObject(AActor* Object) noexcept;
 
 	static void ActivateObject(AActor* Object) noexcept;
 	static void DeactivateObject(AActor* Object) noexcept;

@@ -5,5 +5,3 @@
 #include "CoreMinimal.h"
 
 //// Headers that need extra Modules
-// Paper2D
-// #include "PaperSpriteComponent.h"

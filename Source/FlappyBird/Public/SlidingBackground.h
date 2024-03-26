@@ -9,8 +9,8 @@
 
 class USpeedComponent;
 
-UCLASS(Config=game, BlueprintType, Blueprintable)
-class FLAPPYBIRD_API ASlidingBackground final : public AActor
+UCLASS(BlueprintType, Blueprintable)
+class FLAPPYBIRD_API ASlidingBackground : public AActor
 {
 	GENERATED_BODY()
 
@@ -32,8 +32,9 @@ class FLAPPYBIRD_API ASlidingBackground final : public AActor
 	UPROPERTY(Category=Movement, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<USpeedComponent> SpeedComponent = nullptr;
 	
-
+#if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& e) override;
+#endif // WITH_EDITOR
 	
 public:	
 	// Sets default values for this actor's properties
@@ -59,23 +60,23 @@ public:
 	FORCEINLINE UPaperSprite* GetBackgroundSource() const { return BackgroundSource; }
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetBackgroundSource(UPaperSprite* NewSource);
+	void SetBackgroundSource(UPaperSprite* NewSource);
 
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE FVector2D GetPanelSize() const
 	{
 		if (PanelZero == nullptr || PanelZero->GetSprite() == nullptr)
 			return {0, 0};
-		return PanelZero->GetSprite()->GetSourceSize();
-			
+		const auto Extent = PanelZero->GetSprite()->GetRenderBounds().BoxExtent * 2;
+		return {Extent[0], Extent[1]};
 	}
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetProgression(float NewProgression);
+	void SetProgression(float NewProgression);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetProgression() const { return Progression; }
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetDirectionMultiplier(float NewDirectionMultiplier);
+	void SetDirectionMultiplier(float NewDirectionMultiplier);
 };

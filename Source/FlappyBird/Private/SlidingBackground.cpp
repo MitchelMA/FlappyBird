@@ -31,7 +31,12 @@ ASlidingBackground::ASlidingBackground()
 	SetBackgroundSource(BackgroundSource);
 }
 
-void ASlidingBackground::PostEditChangeProperty(FPropertyChangedEvent& e)
+#if WITH_EDITOR
+
+void
+ASlidingBackground::PostEditChangeProperty(
+	FPropertyChangedEvent& e
+)
 {
 	Super::PostEditChangeProperty(e);
 
@@ -40,6 +45,7 @@ void ASlidingBackground::PostEditChangeProperty(FPropertyChangedEvent& e)
 		SetBackgroundSource(BackgroundSource);
 }
 
+#endif // WITH_EDITOR
 
 // Called when the game starts or when spawned
 void
@@ -100,17 +106,6 @@ ASlidingBackground::SetProgression(
 	const auto Offset = PanelSize[0] * HorizontalDirectionMultiplier * Progression;
 
 	PanelOffset->SetRelativeLocation({Offset, CurrentPanelPos[1], CurrentPanelPos[2]});
-	
-	//
-	// auto dimensions = GetPanelSize();
-	// auto yPos = PanelZero->GetRelativeLocation()[1];
-	// auto baseOffset = dimensions * DirectionMultiplier;
-	//
-	// auto offsetPanelZero = baseOffset * Progression;
-	// auto offsetPanelOne = baseOffset * Progression - baseOffset;
-	//
-	// PanelZero->SetRelativeLocation({offsetPanelZero[0], yPos, offsetPanelZero[1]});
-	// PanelOne->SetRelativeLocation({offsetPanelOne[0], yPos, offsetPanelOne[1]});
 }
 
 void

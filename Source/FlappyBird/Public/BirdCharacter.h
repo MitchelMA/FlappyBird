@@ -18,7 +18,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdFlapDelegate);
 DECLARE_LOG_CATEGORY_EXTERN(LogBirdCharacter, Log, All);
 
 UCLASS(Blueprintable, BlueprintType)
-class FLAPPYBIRD_API ABirdCharacter final : public APaperCharacter
+class FLAPPYBIRD_API ABirdCharacter : public APaperCharacter
 {
 	GENERATED_BODY()
 

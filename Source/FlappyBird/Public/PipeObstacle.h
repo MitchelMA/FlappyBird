@@ -14,7 +14,7 @@ class USpeedComponent;
  * 
  */
 UCLASS(Blueprintable, BlueprintType)
-class FLAPPYBIRD_API APipeObstacle final : public AActor
+class FLAPPYBIRD_API APipeObstacle : public AActor
 {
 	GENERATED_BODY()
 
@@ -64,14 +64,16 @@ class FLAPPYBIRD_API APipeObstacle final : public AActor
 	// ----- OVERRIDEN METHODS ----- //
 
 
+#if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif // WITH_EDITOR
 
 	virtual void BeginPlay() override;
 
 	// ----- UTILITY METHODS ----- //
 	
-	FORCEINLINE TPair<UE::Math::TVector<double>, UE::Math::TVector<double>> GetPipeExtends() const noexcept;
-	FORCEINLINE TPair<UE::Math::TVector<double>, UE::Math::TVector<double>> GetPipeSizes() const noexcept;
+	TPair<UE::Math::TVector<double>, UE::Math::TVector<double>> GetPipeExtends() const noexcept;
+	TPair<UE::Math::TVector<double>, UE::Math::TVector<double>> GetPipeSizes() const noexcept;
 
 public:
 	APipeObstacle();
@@ -81,26 +83,26 @@ public:
 	// ----- BLUEPRINT CALLABLES ----- //
 
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetTopSpriteSource(UPaperSprite* NewSpriteSource);
+	void SetTopSpriteSource(UPaperSprite* NewSpriteSource);
 	
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetBottomSpriteSource(UPaperSprite* NewSpriteSource);
+	void SetBottomSpriteSource(UPaperSprite* NewSpriteSource);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetMirrorsTop() const { return bMirrorTop; }
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetMirrorsTop(bool NewValue);
+	void SetMirrorsTop(bool NewValue);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE double GetPassBarrierXPosition() const;
+	double GetPassBarrierXPosition() const;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetGapHeight() const { return GapHeight; }
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetGapHeight(float NewGapHeight);
+	void SetGapHeight(float NewGapHeight);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetHeightOffset() const { return HeightOffset; }
 	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetHeightOffset(float NewHeightOffset);
+	void SetHeightOffset(float NewHeightOffset);
 };
