@@ -2,17 +2,21 @@
 
 #include "ScoreCounter.h"
 #include "ScoreSpeedProfile.h"
-#include "Kismet/GameplayStatics.h"
+#include "TemplatedBlueprintMethods.h"
+
+DEFINE_LOG_CATEGORY(LogScoreSpeedComponent);
 
 AScoreCounter*
 UScoreSpeedComponent::GetScoreCounter()
 {
-	if (ScoreCounter != nullptr)
+	if (IsValid(ScoreCounter))
 		return ScoreCounter;
 
-	ScoreCounter = Cast<AScoreCounter>(
-		UGameplayStatics::GetActorOfClass(GetWorld(), AScoreCounter::StaticClass()));
-	return GetScoreCounter();
+	ScoreCounter = Templated::GetActorOfClass<AScoreCounter>(GetWorld());
+	if (!IsValid(ScoreCounter))
+		UE_LOG(LogScoreSpeedComponent, Warning, TEXT("Unable to find a ScoreCounter in current level"));
+	
+	return ScoreCounter;
 }
 
 double

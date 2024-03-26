@@ -78,7 +78,7 @@ AObjPool::StoreObject(
 	AActor* Object
 ) noexcept
 {
-	if (Object == nullptr && !Cast<UClass>(Object)->IsChildOf(ActorType))
+	if (!IsValid(Object) && !Cast<UClass>(Object)->IsChildOf(ActorType))
 		return false;
 
 	DeactivateObject(Object);

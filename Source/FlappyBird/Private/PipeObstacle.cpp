@@ -112,10 +112,10 @@ APipeObstacle::SetTopSpriteSource(
 	UPaperSprite* NewSpriteSource
 )
 {
-	if (TopPanel != nullptr)
+	if (IsValid(TopPanel))
 		TopPanel->SetSprite(NewSpriteSource);
 
-	if (!bMirrorTop || BottomPanel == nullptr)
+	if (!bMirrorTop || !IsValid(BottomPanel))
 		return;
 
 	TopSpriteSource = NewSpriteSource;
@@ -133,7 +133,7 @@ APipeObstacle::SetBottomSpriteSource(
 	UPaperSprite* NewSpriteSource
 )
 {
-	if (BottomPanel == nullptr || bMirrorTop)
+	if (!IsValid(BottomPanel) || bMirrorTop)
 		return;
 
 	BottomSpriteSource = NewSpriteSource;

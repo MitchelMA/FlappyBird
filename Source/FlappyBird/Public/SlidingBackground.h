@@ -65,7 +65,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE FVector2D GetPanelSize() const
 	{
-		if (PanelZero == nullptr || PanelZero->GetSprite() == nullptr)
+		if (!IsValid(PanelZero) || !IsValid(PanelZero->GetSprite()))
 			return {0, 0};
 		const auto Extent = PanelZero->GetSprite()->GetRenderBounds().BoxExtent * 2;
 		return {Extent[0], Extent[1]};

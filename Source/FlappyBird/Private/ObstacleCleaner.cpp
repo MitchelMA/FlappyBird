@@ -28,7 +28,7 @@ AObstacleCleaner::OnCleanTrigger(
 		return;
 
 	
-	if (ObjectPool == nullptr)
+	if (!IsValid(ObjectPool))
 		UE_LOG(LogObstacleCleaner, Warning, TEXT("No reference was set for the ObjectPool"));
 
 	if (!ObjectPool->StoreObject(OtherActor))
@@ -57,10 +57,9 @@ void AObstacleCleaner::BeginPlay()
 	Super::BeginPlay();
 
 	CleanTrigger->OnComponentBeginOverlap.AddDynamic(this, &AObstacleCleaner::OnCleanTrigger);
-	if (ObjectPool == nullptr)
+	if (!IsValid(ObjectPool))
 		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red,
 			TEXT("Missing Reference of ObjectPool"));
-	
 }
 
 // Called every frame

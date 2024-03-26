@@ -76,7 +76,7 @@ ASlidingBackground::SetBackgroundSource(
 	UPaperSprite* NewSource
 )
 {
-	if (PanelZero == nullptr || PanelOne == nullptr)
+	if (!IsValid(PanelZero) || !IsValid(PanelOne))
 		return;
 
 	BackgroundSource = NewSource;
@@ -97,7 +97,7 @@ ASlidingBackground::SetProgression(
 	const float NewProgression
 )
 {
-	if (PanelZero == nullptr || PanelOne == nullptr)
+	if (!IsValid(PanelZero) || !IsValid(PanelOne))
 		return;
 	
 	Progression = NewProgression;

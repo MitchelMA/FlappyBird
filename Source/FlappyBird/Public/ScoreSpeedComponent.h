@@ -4,12 +4,11 @@
 #include "SpeedComponent.h"
 #include "ScoreSpeedComponent.generated.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogScoreSpeedComponent, Log, All);
+
 class UScoreSpeedProfile;
 class AScoreCounter;
 
-/**
- * 
- */
 UCLASS(ClassGroup=(Speed), meta=(BlueprintSpawnableComponent=true))
 class FLAPPYBIRD_API UScoreSpeedComponent : public USpeedComponent
 {
