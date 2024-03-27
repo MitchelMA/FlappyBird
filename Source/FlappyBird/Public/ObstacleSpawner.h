@@ -2,13 +2,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "PipeObstacle.h"
 #include "ObstacleSpawner.generated.h"
 
 class AObjPool;
 class AScoreCounter;
 class UBoxComponent;
 class ABirdCharacter;
-class APipeObstacle;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogObstacleSpawner, Log, All);
 
