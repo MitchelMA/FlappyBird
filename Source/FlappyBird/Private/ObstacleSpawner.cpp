@@ -2,9 +2,11 @@
 
 
 #include "ObstacleSpawner.h"
-
+#include "PipeObstacle.h"
 #include "ObjPool.h"
 #include "Components/BoxComponent.h"
+
+DEFINE_LOG_CATEGORY(LogObstacleSpawner);
 
 // Sets default values
 AObstacleSpawner::AObstacleSpawner()
@@ -38,13 +40,18 @@ AObstacleSpawner::Tick(
 	Super::Tick(DeltaTime);
 }
 
-AActor*
+APipeObstacle*
 AObstacleSpawner::SpawnPipe()
 noexcept
 {
 	if (!IsValid(ObjectPool))
 		return nullptr;
 
-	return ObjectPool->RequestObject(GetActorLocation());
+	const auto Pipe = Cast<APipeObstacle>(ObjectPool->RequestObject(GetActorLocation()));
+
+	if (!IsValid(Pipe))
+		UE_LOG(LogObstacleSpawner, Warning, TEXT("Failed to cast requested object from pool to a pipe obstacle"));
+	
+	return Pipe;
 }
 

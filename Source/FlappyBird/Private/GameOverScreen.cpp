@@ -4,8 +4,8 @@
 #include "GameOverScreen.h"
 
 #include "ResetInstigator.h"
+#include "TemplatedBlueprintMethods.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Components/WidgetComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -16,13 +16,6 @@ AGameOverScreen::AGameOverScreen()
 
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Default Scene Root"));
 	RootComponent = DefaultSceneRoot;
-
-	Widget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Widget"));
-	Widget->SetupAttachment(DefaultSceneRoot);
-	// Draw the widget to the screen, not the world
-	Widget->SetWidgetSpace(EWidgetSpace::Screen);
-	// Sets the correct game-over Widget Blueprint class to use
-	Widget->SetWidgetClass(ConstructorHelpers::FClassFinder<UUserWidget>(TEXT("/Game/FlappyBird/Blueprints/UI/WBP_GameOver")).Class);
 }
 
 // Called when the game starts or when spawned
@@ -49,7 +42,6 @@ const noexcept
 	auto PlayerController = GetWorld()->GetFirstPlayerController();
 	UWidgetBlueprintLibrary::SetInputMode_GameOnly(PlayerController);
 	PlayerController->bShowMouseCursor = false;
-	PlayerController->SetPause(false);
 }
 
 void
@@ -57,9 +49,8 @@ AGameOverScreen::Open()
 const noexcept
 {
 	auto PlayerController = GetWorld()->GetFirstPlayerController();
-	UWidgetBlueprintLibrary::SetInputMode_UIOnlyEx(PlayerController);
+	UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(PlayerController);
 	PlayerController->bShowMouseCursor = true;
-	PlayerController->SetPause(true);
 }
 
 void
@@ -67,7 +58,7 @@ AGameOverScreen::OnRestartClicked()
 const noexcept
 {
 	Close();
-	const auto ResetInstigator = Cast<AResetInstigator>(UGameplayStatics::GetActorOfClass(GetWorld(), AResetInstigator::StaticClass()));
+	const auto ResetInstigator = Templated::GetActorOfClass<AResetInstigator>(GetWorld());
 	ResetInstigator->ResetAll();
 }
 

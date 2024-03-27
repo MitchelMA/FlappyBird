@@ -8,6 +8,9 @@ class AObjPool;
 class AScoreCounter;
 class UBoxComponent;
 class ABirdCharacter;
+class APipeObstacle;
+
+DECLARE_LOG_CATEGORY_EXTERN(LogObstacleSpawner, Log, All);
 
 UCLASS(BlueprintType, Blueprintable)
 class FLAPPYBIRD_API AObstacleSpawner : public AActor
@@ -40,5 +43,5 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	AActor* SpawnPipe() noexcept;
+	APipeObstacle* SpawnPipe() noexcept;
 };

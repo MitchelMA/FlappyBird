@@ -13,8 +13,6 @@ class FLAPPYBIRD_API AGameOverScreen : public AActor
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<USceneComponent> DefaultSceneRoot;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
-	TObjectPtr<UWidgetComponent> Widget;
 	
 public:	
 	// Sets default values for this actor's properties
