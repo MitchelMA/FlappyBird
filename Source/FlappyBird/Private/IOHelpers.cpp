@@ -1,6 +1,8 @@
 #include "IOHelpers.h"
 #include "ScoreTable.h"
 #include "JsonObjectConverter.h"
+#include "RijndaelBPLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogIOHelper)
 
@@ -21,9 +23,20 @@ UIOHelpers::SaveScore(
 		return;
 	}
 
+	const FString Key = UGameplayStatics::GetPlatformName() + UKismetSystemLibrary::GetPlatformUserName();
+	TArray<uint8> CipherBytes;
+	bool EncryptionSuccess = false;
+	URijndaelBPLibrary::Encrypt(JsonString, Key, EncryptionSuccess, CipherBytes);
+	
+	if (!EncryptionSuccess)
+	{
+		Success = false;
+		return;
+	}
+
 	FFileHelper FileHelper = {};
 	const FString FullSaveFileName = FPaths::Combine(SaveDirectory, FileName);
-	if ((Success = FileHelper.SaveStringToFile(JsonString, *FullSaveFileName)) == true)
+	if ((Success = FileHelper.SaveArrayToFile(CipherBytes, *FullSaveFileName)) == true)
 		FullOutputName = FullSaveFileName;
 }
 
@@ -42,12 +55,22 @@ UIOHelpers::LoadScore(
 		return;
 	}
 
-	FString JsonString;
-	if (!FileHelper.LoadFileToString(JsonString, *FullSaveFileName))
+	TArray<uint8> CipherBytes;
+	if (!FileHelper.LoadFileToArray(CipherBytes, *FullSaveFileName))
 	{
 		Success = false;
 		return;
 	}
 
-	Success = FJsonObjectConverter::JsonObjectStringToUStruct<FScoreTable>(JsonString, &ScoreTable);
+	const FString Key = UGameplayStatics::GetPlatformName() + UKismetSystemLibrary::GetPlatformUserName();
+	FString JsonText;
+	bool DecryptionSuccess = false;
+	URijndaelBPLibrary::Decrypt(CipherBytes, Key, DecryptionSuccess, JsonText);
+	if (!DecryptionSuccess)
+	{
+		Success = false;
+		return;
+	}
+
+	Success = FJsonObjectConverter::JsonObjectStringToUStruct<FScoreTable>(JsonText, &ScoreTable);
 }

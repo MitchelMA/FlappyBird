@@ -8,6 +8,8 @@ public class FlappyBird : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Paper2D", "JsonUtilities", "Json", "UMG"});
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", "Paper2D", "JsonUtilities", "Json", "UMG", "Rijndael"});
+		PublicIncludePathModuleNames.AddRange(new [] {"Rijndael"});
+		
 	}
 }
