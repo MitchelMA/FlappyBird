@@ -4,6 +4,8 @@
 
 #include "Modules/ModuleManager.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogRijndael, Log, All);
+
 class RIJNDAEL_API FRijndaelModule : public IModuleInterface
 {
 	void* Rijndael_DLL_Handle = nullptr;

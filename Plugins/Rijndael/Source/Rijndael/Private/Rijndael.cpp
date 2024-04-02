@@ -5,13 +5,17 @@
 
 #define LOCTEXT_NAMESPACE "FRijndaelModule"
 
-static const auto LibPath = FPaths::Combine(IPluginManager::Get().FindPlugin("Rijndael")->GetBaseDir(), "Lib");
+DEFINE_LOG_CATEGORY(LogRijndael);
 
 void FRijndaelModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
-
+	
+	const auto LibPath = FPaths::Combine(IPluginManager::Get().FindPlugin("Rijndael")->GetBaseDir(), "Lib");
 	Rijndael_DLL_Handle = FPlatformProcess::GetDllHandle(*FPaths::Combine(LibPath, "Rijndael.dll"));
+
+	if (Rijndael_DLL_Handle != nullptr)
+		UE_LOG(LogRijndael, Log, TEXT("Successfully loaded handle for Rijndael.dll"))
 }
 
 void FRijndaelModule::ShutdownModule()
@@ -21,9 +25,10 @@ void FRijndaelModule::ShutdownModule()
 
 	if (Rijndael_DLL_Handle == nullptr)
 		return;
-
+	
 	FPlatformProcess::FreeDllHandle(Rijndael_DLL_Handle);
 	Rijndael_DLL_Handle = nullptr;
+	UE_LOG(LogRijndael, Log, TEXT("Successfully unloaded handle for Rijndael.dll"))
 }
 
 #undef LOCTEXT_NAMESPACE
