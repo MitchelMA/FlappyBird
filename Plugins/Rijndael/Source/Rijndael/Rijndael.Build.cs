@@ -58,5 +58,7 @@ public class Rijndael : ModuleRules
 		
 		PublicDelayLoadDLLs.Add("Rijndael.dll");
 		PublicAdditionalLibraries.Add(Path.Combine(rijndaelLibPath, "Rijndael.lib"));
+		if (Target.Platform == UnrealTargetPlatform.Win64)
+			RuntimeDependencies.Add(Path.Combine(rijndaelLibPath, "Rijndael.dll"));
 	}
 }

@@ -15,7 +15,15 @@ void FRijndaelModule::StartupModule()
 	Rijndael_DLL_Handle = FPlatformProcess::GetDllHandle(*FPaths::Combine(LibPath, "Rijndael.dll"));
 
 	if (Rijndael_DLL_Handle != nullptr)
-		UE_LOG(LogRijndael, Log, TEXT("Successfully loaded handle for Rijndael.dll"))
+	{
+		UE_LOG(LogRijndael, Log,
+			TEXT("Successfully loaded handle `Rijndael.dll` for plugin"));
+	}
+	else
+	{
+		UE_LOG(LogRijndael, Error,
+			TEXT("Failed trying to load handle `Rijndael.dll` for plugin"));	
+	}
 }
 
 void FRijndaelModule::ShutdownModule()

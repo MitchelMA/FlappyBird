@@ -37,7 +37,6 @@ URijndaelBPLibrary::Encrypt(
 	TArray<uint8>& CipherBytes
 )
 {
-	
 	FString PlainCopy = PlainText;
 
 	FString KeyCopy = Key;
@@ -48,12 +47,7 @@ URijndaelBPLibrary::Encrypt(
 	uint8 IvBytes[16] = {0};
 
 	StringToBytes(KeyCopy, KeyBytes, KeyLength);
-
-	// TODO! DOESN'T WORK IN PACKAGE!!
 	rijndael_gen_iv(IvBytes);
-	Success = false;
-	return;
-	
 	
 	PrependString(PlainCopy, IvBytes);
 
