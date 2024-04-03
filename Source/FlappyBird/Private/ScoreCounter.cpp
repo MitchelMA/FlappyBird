@@ -48,11 +48,11 @@ AScoreCounter::SetDisplayScore(
 	const int64 DisplayScore
 ) noexcept
 {
-	auto ScoreStr = FString::FromInt(DisplayScore).Reverse();
+	auto ScoreStr = FString::FromInt(DisplayScore);
 	const int32 Diff = ScoreMinimalDisplaylength - ScoreStr.Len();
 
 	for (int32 i = 0; i < Diff; i++)
-		ScoreStr.Append("0");
+		ScoreStr.InsertAt(0, '0');
 
-	ScoreText->SetText(FText::FromString(ScoreStr.Reverse()));
+	ScoreText->SetText(FText::FromString(ScoreStr));
 }
