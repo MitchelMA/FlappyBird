@@ -21,9 +21,6 @@ class FLAPPYBIRD_API AScoreCounter : public AActor
 
 	UPROPERTY(Category=Settings, EditAnywhere, BlueprintReadWrite, meta=(AllowPrivateAccess=true))
 	int32 ScoreMinimalDisplaylength = 3;
-
-	UPROPERTY(BlueprintGetter=GetHighScoreC)
-	int64 HighScoreC = 0;
 	
 	UPROPERTY(BlueprintGetter=GetScore)
 	int64 Score = 0;
@@ -47,17 +44,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE int64 GetScore() const { return Score; }
 
-	UFUNCTION(BlueprintCallable, BlueprintPure)
-	FORCEINLINE int64 GetHighScoreC() const {return HighScoreC; }
-
 	UFUNCTION()
 	void SetDisplayScore(int64 DisplayScore) noexcept;
-
-	UFUNCTION()
-	void SetDisplayHighScore(int64 DisplayHighScore) noexcept;
-
-	UFUNCTION()
-	void DisplayScore(int64 DisplayScore, UTextRenderComponent* TextRenderer) noexcept;
 
 	UPROPERTY(Category=Events, BlueprintAssignable)
 	FScoreIncreasedDelegate OnScoreIncreasedDelegate;

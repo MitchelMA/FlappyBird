@@ -61,16 +61,3 @@ AScoreCounter::SetDisplayScore(
 
 	ScoreText->SetText(FText::FromString(ScoreStr));
 }
-
-void
-AScoreCounter::SetDisplayHighScore(
-	const int64 DisplayHighScore
-) noexcept
-{
-	auto ScoreStr = FString::FromInt(DisplayHighScore);
-	const int32 Diff = ScoreMinimalDisplaylength - ScoreStr.Len();
-}
-
-void AScoreCounter::DisplayScore(int64 DisplayScore, UTextRenderComponent* TextRenderer) noexcept
-{
-}

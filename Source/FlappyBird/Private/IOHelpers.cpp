@@ -7,6 +7,7 @@
 DEFINE_LOG_CATEGORY(LogIOHelper)
 
 FString UIOHelpers::SaveDirectory = FPaths::Combine(*FPaths::ProjectDir(), TEXT("SaveDir"));
+static FString GetKey() noexcept;
 
 void
 UIOHelpers::SaveScore(
@@ -23,10 +24,9 @@ UIOHelpers::SaveScore(
 		return;
 	}
 
-	const FString Key = UGameplayStatics::GetPlatformName() + UKismetSystemLibrary::GetPlatformUserName();
 	TArray<uint8> CipherBytes;
 	bool EncryptionSuccess = false;
-	URijndaelBPLibrary::Encrypt(JsonString, Key, EncryptionSuccess, CipherBytes);
+	URijndaelBPLibrary::Encrypt(JsonString, GetKey(), EncryptionSuccess, CipherBytes);
 	
 	if (!EncryptionSuccess)
 	{
@@ -62,10 +62,9 @@ UIOHelpers::LoadScore(
 		return;
 	}
 
-	const FString Key = UGameplayStatics::GetPlatformName() + UKismetSystemLibrary::GetPlatformUserName();
 	FString JsonText;
 	bool DecryptionSuccess = false;
-	URijndaelBPLibrary::Decrypt(CipherBytes, Key, DecryptionSuccess, JsonText);
+	URijndaelBPLibrary::Decrypt(CipherBytes, GetKey(), DecryptionSuccess, JsonText);
 	if (!DecryptionSuccess)
 	{
 		Success = false;
@@ -73,4 +72,17 @@ UIOHelpers::LoadScore(
 	}
 
 	Success = FJsonObjectConverter::JsonObjectStringToUStruct<FScoreTable>(JsonText, &ScoreTable);
+}
+
+FString
+GetKey()
+noexcept
+{
+	FString ProjectId;
+	GConfig->GetString(
+		TEXT("/Script/EngineSettings.GeneralProjectSettings"),
+		TEXT("ProjectID"),
+		ProjectId,
+		GGameIni);
+	return UGameplayStatics::GetPlatformName() + UKismetSystemLibrary::GetPlatformUserName() + ProjectId;
 }
