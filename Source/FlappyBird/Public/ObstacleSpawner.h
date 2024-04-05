@@ -20,9 +20,6 @@ class FLAPPYBIRD_API AObstacleSpawner : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<USceneComponent> DefaultSceneRoot;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
-	TObjectPtr<UBoxComponent> SpawnTrigger;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<AObjPool> ObjectPool = nullptr;
 
