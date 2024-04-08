@@ -21,7 +21,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditAnywhere, Category=Settings,
+	UPROPERTY(EditAnywhere, Category=SpeedSettings,
 		BlueprintGetter=GetIsSpeedDisabled, BlueprintSetter=SetIsSpeedDisabled)
 	bool bIsSpeedDisabled = false;
 

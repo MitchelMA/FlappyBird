@@ -1,6 +1,4 @@
 #include "SlidingBackground.h"
-
-#include "IMessageTracer.h"
 #include "ScoreSpeedComponent.h"
 
 // Sets default values
