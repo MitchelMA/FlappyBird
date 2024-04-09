@@ -26,6 +26,10 @@ class FLAPPYBIRD_API UScoreSpeedComponent : public USpeedComponent
 
 	UPROPERTY(Category=SpeedSettings, EditAnywhere,
 		meta=(EditCondition="!UseProfile", EditConditionHides=true))
+	float MaxSpeed = 0.f;
+
+	UPROPERTY(Category=SpeedSettings, EditAnywhere,
+		meta=(EditCondition="!UseProfile", EditConditionHides=true))
 	float ScaleMultiplier = 1.f;
 	
 	UPROPERTY(Category=SpeedSettings, EditAnywhere, AdvancedDisplay)
@@ -52,7 +56,12 @@ public:
 	void SetScoreAddition(const float NewScoreAddition) noexcept; 
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetMaxSpeed() const noexcept;
+	UFUNCTION(BlueprintCallable)
+	void SetMaxSpeed(const float NewMaxSpeed) noexcept;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetScaleMultiplier() const noexcept;
 	UFUNCTION(BlueprintCallable)
-	void SetScaleMultiplier(const float NewScaleMultiplier) noexcept; 
+	void SetScaleMultiplier(const float NewScaleMultiplier) noexcept;
 };

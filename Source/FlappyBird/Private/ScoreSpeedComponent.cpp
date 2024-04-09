@@ -3,6 +3,8 @@
 #include "ScoreCounter.h"
 #include "ScoreSpeedProfile.h"
 #include "TemplatedBlueprintMethods.h"
+#include "GenericPlatform/GenericPlatformMath.h"
+#include "Kismet/KismetMathLibrary.h"
 
 DEFINE_LOG_CATEGORY(LogScoreSpeedComponent);
 
@@ -26,7 +28,11 @@ UScoreSpeedComponent::GetSpeed()
 		return 0.;
 	
 	const auto CurrentScore = GetScoreCounter()->GetScore();
-	return (GetBaseSpeed() + CurrentScore * GetScoreAddition()) * GetScaleMultiplier();
+	return
+	std::min(
+		GetBaseSpeed() + CurrentScore * GetScoreAddition(),
+		GetMaxSpeed()
+	) * GetScaleMultiplier();
 }
 
 float
@@ -65,6 +71,29 @@ UScoreSpeedComponent::SetScoreAddition(
 	UseProfile ?
 		Profile->ScoreAddition = NewScoreAddition :
 		ScoreAddition = NewScoreAddition;
+}
+
+float
+UScoreSpeedComponent::GetMaxSpeed()
+const noexcept
+{
+	const auto Max = UseProfile ?
+		Profile->MaxSpeed :
+		MaxSpeed;
+
+	if (Max <= 0)
+		return TNumericLimits<float>::Max();
+	return Max;
+}
+
+void
+UScoreSpeedComponent::SetMaxSpeed(
+	const float NewMaxSpeed
+) noexcept
+{
+	UseProfile ?
+		Profile->MaxSpeed = NewMaxSpeed :
+		MaxSpeed = NewMaxSpeed;
 }
 
 float
