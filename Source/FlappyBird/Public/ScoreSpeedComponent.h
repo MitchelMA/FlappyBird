@@ -33,7 +33,7 @@ class FLAPPYBIRD_API UScoreSpeedComponent : public USpeedComponent
 	float ScaleMultiplier = 1.f;
 	
 	UPROPERTY(Category=SpeedSettings, EditAnywhere, AdvancedDisplay)
-	bool UseProfile;
+	bool UseProfile = false;
 
 	UPROPERTY(Category=SpeedSettings, EditAnywhere, AdvancedDisplay,
 		meta=(EditCondition="UseProfile", EditConditionHides=true))
@@ -42,6 +42,8 @@ class FLAPPYBIRD_API UScoreSpeedComponent : public USpeedComponent
 	AScoreCounter* GetScoreCounter();
 	
 public:
+
+	UScoreSpeedComponent();
 
 	virtual double GetSpeed() override;
 

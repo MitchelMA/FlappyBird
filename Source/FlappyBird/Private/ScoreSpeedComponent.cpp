@@ -21,6 +21,11 @@ UScoreSpeedComponent::GetScoreCounter()
 	return ScoreCounter;
 }
 
+UScoreSpeedComponent::UScoreSpeedComponent()
+{
+	PrimaryComponentTick.bCanEverTick = false;
+}
+
 double
 UScoreSpeedComponent::GetSpeed()
 {

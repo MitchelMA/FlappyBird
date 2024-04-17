@@ -5,6 +5,8 @@
 // Sets default values
 AScoreCounter::AScoreCounter()
 {
+	PrimaryActorTick.bCanEverTick = false;
+	
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("Default Scene Root"));
 	DefaultSceneRoot->Mobility = EComponentMobility::Static;
 	RootComponent = DefaultSceneRoot;
