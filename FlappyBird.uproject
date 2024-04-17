@@ -12,6 +12,11 @@
 				"Engine",
 				"Paper2D"
 			]
+		},
+		{
+			"Name": "Math",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
