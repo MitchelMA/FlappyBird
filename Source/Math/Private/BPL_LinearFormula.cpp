@@ -1,5 +1,4 @@
 #include "BPL_LinearFormula.h"
-
 #include "LinearData.h"
 
 FLinearData
@@ -20,7 +19,7 @@ UBPL_LinearFormula::GetSlope(
 	const FLinearData& Formula
 ) noexcept
 {
-	if (abs(Formula.ComponentQ) <= 0.0001)
+	if (FMath::IsNearlyZero(Formula.ComponentQ))
 		return INFINITY;
 
 	return - Formula.ComponentP / Formula.ComponentQ;
@@ -32,7 +31,7 @@ UBPL_LinearFormula::SetSlope(
 	const float Slope
 ) noexcept
 {
-	if (isinf(Slope))
+	if (!FMath::IsFinite(Slope))
 	{
 		Formula.ComponentP = 1;
 		Formula.ComponentQ = 0;
@@ -49,7 +48,7 @@ UBPL_LinearFormula::GetX(
 	const float Y
 ) noexcept
 {
-	if (Formula.ComponentP != 0)
+	if (!FMath::IsNearlyZero(Formula.ComponentP))
 		return (Formula.ComponentR - Formula.ComponentQ * Y) / Formula.ComponentP;
 	return INFINITY;
 }
@@ -60,7 +59,7 @@ UBPL_LinearFormula::GetY(
 	const float X
 ) noexcept
 {
-	if (Formula.ComponentQ != 0)
+	if (!FMath::IsNearlyZero(Formula.ComponentQ))
 		return (Formula.ComponentR - Formula.ComponentP * X) / Formula.ComponentQ;
 	return INFINITY;
 }
@@ -71,14 +70,14 @@ UBPL_LinearFormula::GetRoot(
 	FVector2D& Root
 ) noexcept
 {
-	if (abs(Formula.ComponentP) >= 0.001f)
+	if (FMath::IsNearlyZero(Formula.ComponentP))
 	{
 		Root[0] = GetX(Formula, 0);
 		Root[1] = 0;
 		return true;
 	}
 
-	if (abs(Formula.ComponentR) <= 0.001f)
+	if (FMath::IsNearlyZero(Formula.ComponentR))
 	{
 		Root[0] = INFINITY;
 		Root[1] = 0;
@@ -94,9 +93,9 @@ UBPL_LinearFormula::GetYIntercept(
 	FVector2D& YIntercept
 ) noexcept
 {
-	if (abs(Formula.ComponentQ) <= 0.001f)
+	if (FMath::IsNearlyZero(Formula.ComponentQ))
 	{
-		if (abs(Formula.ComponentR) <= 0.001f)
+		if (FMath::IsNearlyZero(Formula.ComponentR))
 		{
 			YIntercept[0] = 0;
 			YIntercept[1] = INFINITY;
@@ -124,7 +123,7 @@ UBPL_LinearFormula::ReducedEchelon(
 		{0, 0, 0 }
 	);
 
-	if (abs(Matrix.M[0][0]) <= 0.0001)
+	if (FMath::IsNearlyZero(Matrix.M[0][0]))
 		Swap(Matrix.M[0], Matrix.M[1]);
 
 	Matrix.M[0][1] /= Matrix.M[0][0];
@@ -157,7 +156,8 @@ UBPL_LinearFormula::DoesIntersect(
 	const auto BSlope = GetSlope(FormulaB);
 	auto SlopeDiff = abs(ASlope - BSlope);
 
-	if (isinf(ASlope) && isinf(BSlope))
+	
+	if (!FMath::IsFinite(ASlope) && !FMath::IsFinite(BSlope))
 		SlopeDiff = 0;
 
 	if (SlopeDiff > Tolerance)
@@ -221,7 +221,23 @@ UBPL_LinearFormula::IsNormalised(
 	const auto FirstNOnEmpty = FirstNonEmptyMember(Formula);
 	if (FirstNOnEmpty == -1)
 		return false;
-	return abs((&(Formula.ComponentP))[FirstNOnEmpty] - 1) <= 0.0001f;
+	return FMath::IsNearlyEqual((&(Formula.ComponentP))[FirstNOnEmpty], 1);
+}
+
+bool
+UBPL_LinearFormula::Equals(
+	const FLinearData& FormulaA,
+	const FLinearData& FormulaB
+) noexcept
+{
+	const auto NormalisedA = Normalised(FormulaA);
+	const auto NormalisedB = Normalised(FormulaB);
+
+	return (
+		NormalisedA.ComponentP == NormalisedB.ComponentP &&
+		NormalisedA.ComponentQ == NormalisedB.ComponentQ &&
+		NormalisedA.ComponentR == NormalisedB.ComponentR
+	);
 }
 
 FString

@@ -51,9 +51,8 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static bool IsNormalised(const FLinearData& Formula) noexcept;
 
-	// TODO: Maak!
-	// UFUNCTION(BlueprintCallable, BlueprintPure)
-	// static bool Equals(const FLinearData& FormulaA, const FLinearData& FormulaB);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	static bool Equals(const FLinearData& FormulaA, const FLinearData& FormulaB) noexcept;
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FString ToString(const FLinearData& Formula) noexcept;
