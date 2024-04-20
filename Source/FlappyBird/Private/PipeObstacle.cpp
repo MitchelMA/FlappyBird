@@ -22,6 +22,12 @@ APipeObstacle::PostEditChangeProperty(
 
 	if (PropertyName == GET_MEMBER_NAME_CHECKED(APipeObstacle, bMirrorTop))
 		SetMirrorsTop(bMirrorTop);
+
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(APipeObstacle, GapHeight))
+		SetGapHeight(GapHeight);
+
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(APipeObstacle, HeightOffset))
+		SetHeightOffset(HeightOffset);
 }
 
 #endif // WITH_EDITOR

@@ -171,7 +171,7 @@ UBPL_LinearFormula::DoesIntersect(
 }
 
 FVector2D
-UBPL_LinearFormula::Intersect(
+UBPL_LinearFormula::GetPointOfIntersection(
 	const FLinearData& FormulaA,
 	const FLinearData& FormulaB,
 	TEnumAsByte<ELinearIntersectionType>& IntersectionType

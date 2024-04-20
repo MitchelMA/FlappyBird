@@ -40,7 +40,7 @@ public:
 	static ELinearIntersectionType DoesIntersect(const FLinearData& FormulaA, const FLinearData& FormulaB, float Tolerance = 1E-45) noexcept;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	static FVector2D Intersect(const FLinearData& FormulaA, const FLinearData& FormulaB, TEnumAsByte<ELinearIntersectionType>& IntersectionType) noexcept;
+	static FVector2D GetPointOfIntersection(const FLinearData& FormulaA, const FLinearData& FormulaB, TEnumAsByte<ELinearIntersectionType>& IntersectionType) noexcept;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	static FLinearData Normalised(const FLinearData& Formula) noexcept;
