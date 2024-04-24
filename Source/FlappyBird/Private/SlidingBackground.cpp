@@ -27,6 +27,11 @@ ASlidingBackground::ASlidingBackground()
 	
 
 	SetBackgroundSource(BackgroundSource);
+
+	PanelZero->SetGenerateOverlapEvents(false);
+	PanelZero->SetCollisionProfileName(TEXT("NoCollision"));
+	PanelOne->SetGenerateOverlapEvents(false);
+	PanelOne->SetCollisionProfileName(TEXT("NoCollision"));
 }
 
 #if WITH_EDITOR

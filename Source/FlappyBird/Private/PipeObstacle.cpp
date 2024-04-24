@@ -1,5 +1,6 @@
 #include "PipeObstacle.h"
 
+#include "PaperSprite.h"
 #include "PaperSpriteComponent.h"
 #include "Components/BoxComponent.h"
 #include "ScoreSpeedComponent.h"
@@ -97,6 +98,21 @@ APipeObstacle::APipeObstacle()
 
 	SetTopSpriteSource(TopSpriteSource);
 	SetBottomSpriteSource(BottomSpriteSource);
+
+	// disables overlap events (they are heavy for moving targets);
+	FCollisionResponseContainer CollisionResponses = FCollisionResponseContainer();
+	CollisionResponses.SetAllChannels(ECollisionResponse::ECR_Ignore);
+	CollisionResponses.SetResponse(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
+	
+	TopPanel->SetGenerateOverlapEvents(false);
+	TopPanel->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	TopPanel->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	TopPanel->SetCollisionResponseToChannels(CollisionResponses);
+	
+	BottomPanel->SetGenerateOverlapEvents(false);
+	BottomPanel->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	BottomPanel->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	BottomPanel->SetCollisionResponseToChannels(CollisionResponses);
 }
 
 void
