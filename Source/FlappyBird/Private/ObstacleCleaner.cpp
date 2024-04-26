@@ -57,6 +57,7 @@ void AObstacleCleaner::BeginPlay()
 	
 	Super::BeginPlay();
 
+	// TODO! Let op overlaps, zijn heavy!
 	CleanTrigger->OnComponentBeginOverlap.AddDynamic(this, &AObstacleCleaner::OnCleanTrigger);
 	if (!IsValid(ObjectPool))
 		GEngine->AddOnScreenDebugMessage(-1, 2.f, FColor::Red,
