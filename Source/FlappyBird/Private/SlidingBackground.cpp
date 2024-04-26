@@ -24,7 +24,11 @@ ASlidingBackground::ASlidingBackground()
 	PanelOne->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UScoreSpeedComponent>(TEXT("SpeedComponent")));
-	
+
+	PanelZero->SetGenerateOverlapEvents(false);
+	PanelZero->SetCollisionProfileName(TEXT("NoCollision"));
+	PanelOne->SetGenerateOverlapEvents(false);
+	PanelOne->SetCollisionProfileName(TEXT("NoCollision"));
 
 	SetBackgroundSource(BackgroundSource);
 }
