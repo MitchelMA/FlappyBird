@@ -12,15 +12,7 @@ DEFINE_LOG_CATEGORY(LogBirdCharacter);
 ABirdCharacter::ABirdCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
-	CapsuleColliderTrigger = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleTrigger"));
-	CapsuleColliderTrigger->SetupAttachment(RootComponent);
-	CapsuleColliderTrigger->InitCapsuleSize(8., 11.);
-	CapsuleColliderTrigger->SetCollisionProfileName(TEXT("Trigger"));
-	
 	GetCapsuleComponent()->InitCapsuleSize(8., 8.);
-	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
-	GetCapsuleComponent()->SetCollisionProfileName(TEXT("Pawn"));
 }
 
 void
@@ -87,8 +79,6 @@ ABirdCharacter::ColliderHit(
 
 		if (ObstacleHitTags.Contains(Name) && !bCastedObstacleHit)
 		{
-			GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red,
-				FString::Printf(TEXT("Collision-tag: %s"), *Name.ToString()));
 			OnBirdHitObstacleDelegate.Broadcast();
 			bCastedObstacleHit = true;
 		}
@@ -100,29 +90,6 @@ ABirdCharacter::ColliderHit(
 		}
 	}
 }
-
-// void
-// ABirdCharacter::ColliderTriggerBeginOverlap(
-// 	UPrimitiveComponent* OverlappedComponent,
-// 	AActor* OtherActor,
-// 	UPrimitiveComponent* OtherComp,
-// 	const int32 OtherBodyIndex,
-// 	const bool bFromSweep,
-// 	const FHitResult& SweepResult
-// )
-// {
-// 	bool bCastedGroundHit = false;
-// 	
-// 	for (const auto Name : OtherComp->ComponentTags)
-// 	{
-// 		if (!GroundHitTags.Contains(Name) || bCastedGroundHit || bIsBirdDead)
-// 			continue;
-// 		
-// 		OnBirdDiedDelegate.Broadcast();
-// 		OnBirdHitGroundDelegate.Broadcast();
-// 		bCastedGroundHit = true;
-// 	}
-// }
 
 void
 ABirdCharacter::BirdDied()
@@ -152,7 +119,6 @@ ABirdCharacter::BeginPlay()
 	OnBirdStartedDelegate.AddDynamic(this, &ABirdCharacter::BirdStarted);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ABirdCharacter::ColliderBeginOverlap);
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ABirdCharacter::ColliderHit);
-	// CapsuleColliderTrigger->OnComponentBeginOverlap.AddDynamic(this, &ABirdCharacter::ColliderTriggerBeginOverlap);
 
 	OnBirdDiedDelegate.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdDied);
 	OnBirdHitGroundDelegate.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdHitGround);

@@ -22,9 +22,6 @@ class FLAPPYBIRD_API ABirdCharacter : public APaperCharacter
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UCapsuleComponent> CapsuleColliderTrigger;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess="true"))
 	UInputMappingContext* DefaultMappingContext;
 
@@ -61,10 +58,6 @@ class FLAPPYBIRD_API ABirdCharacter : public APaperCharacter
 	void ColliderHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 					 UPrimitiveComponent* OtherComp, FVector NormalImpulse,
 					 const FHitResult& Hit);
-	// UFUNCTION()
-	// void ColliderTriggerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	// 							     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
-	// 							     const FHitResult & SweepResult);
 
 	UFUNCTION()
 	void BirdDied();

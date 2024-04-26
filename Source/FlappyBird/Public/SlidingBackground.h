@@ -24,9 +24,9 @@ class FLAPPYBIRD_API ASlidingBackground : public AActor
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> PanelOffset = nullptr;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPaperSpriteComponent> PanelZero = nullptr;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPaperSpriteComponent> PanelOne = nullptr;
 
 	UPROPERTY(Category=Movement, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
