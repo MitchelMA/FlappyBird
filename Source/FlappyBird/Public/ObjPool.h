@@ -8,8 +8,7 @@ class FLAPPYBIRD_API AObjPool : public AActor
 {
 	GENERATED_BODY()
 
-	UPROPERTY()
-	TArray<AActor*> Pool;
+	TArray<TObjectPtr<AActor>> Pool;
 
 	UPROPERTY(EditAnywhere, Category=Settings)
 	UClass* ActorType = nullptr;
