@@ -1,8 +1,8 @@
-#include "ScoreSpeedComponent.h"
+#include "Components/ScoreSpeedComponent.h"
 
 #include "ScoreCounter.h"
-#include "ScoreSpeedProfile.h"
-#include "TemplatedBlueprintMethods.h"
+#include "DataAssets/ScoreSpeedProfile.h"
+#include "Helpers/TemplatedBlueprintMethods.h"
 #include "GenericPlatform/GenericPlatformMath.h"
 #include "Kismet/KismetMathLibrary.h"
 

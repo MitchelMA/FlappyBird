@@ -1,9 +1,9 @@
-#include "PipeObstacle.h"
+#include "Obstacles/PipeObstacle.h"
 
 #include "PaperSprite.h"
 #include "PaperSpriteComponent.h"
 #include "Components/BoxComponent.h"
-#include "ScoreSpeedComponent.h"
+#include "Components/ScoreSpeedComponent.h"
 
 #if WITH_EDITOR
 

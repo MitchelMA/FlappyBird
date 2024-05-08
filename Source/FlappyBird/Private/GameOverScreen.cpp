@@ -4,7 +4,7 @@
 #include "GameOverScreen.h"
 
 #include "ResetInstigator.h"
-#include "TemplatedBlueprintMethods.h"
+#include "Helpers/TemplatedBlueprintMethods.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Kismet/GameplayStatics.h"
 

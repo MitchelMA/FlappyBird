@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ObstacleSpawner.h"
-#include "PipeObstacle.h"
-#include "ObjPool.h"
+#include "Pooling/ObstacleSpawner.h"
+#include "Obstacles/PipeObstacle.h"
+#include "Pooling/ObjPool.h"
 #include "Components/BoxComponent.h"
 
 DEFINE_LOG_CATEGORY(LogObstacleSpawner);

@@ -1,7 +1,7 @@
-#include "ObstacleCleaner.h"
+#include "Pooling/ObstacleCleaner.h"
 
 #include "Components/BoxComponent.h"
-#include "ObjPool.h"
+#include "Pooling/ObjPool.h"
 
 DEFINE_LOG_CATEGORY(LogObstacleCleaner);
 

@@ -1,4 +1,4 @@
-#include "BirdCharacter.h"
+#include "Characters/BirdCharacter.h"
 #include "Components/CapsuleComponent.h"
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"

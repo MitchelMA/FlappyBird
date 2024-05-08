@@ -1,5 +1,5 @@
-#include "IOHelpers.h"
-#include "ScoreTable.h"
+#include "Helpers/IOHelpers.h"
+#include "Structs/ScoreTable.h"
 #include "JsonObjectConverter.h"
 #include "RijndaelBPLibrary.h"
 #include "Kismet/GameplayStatics.h"

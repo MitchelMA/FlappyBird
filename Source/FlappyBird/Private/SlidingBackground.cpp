@@ -1,5 +1,5 @@
 #include "SlidingBackground.h"
-#include "ScoreSpeedComponent.h"
+#include "Components/ScoreSpeedComponent.h"
 
 // Sets default values
 ASlidingBackground::ASlidingBackground()

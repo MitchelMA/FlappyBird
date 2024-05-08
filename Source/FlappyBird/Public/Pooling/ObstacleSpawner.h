@@ -2,7 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "PipeObstacle.h"
+#include "Obstacles/PipeObstacle.h"
 #include "ObstacleSpawner.generated.h"
 
 class AObjPool;
