@@ -5,4 +5,5 @@
 AMainMenuGameMode::AMainMenuGameMode()
 {
 	PlayerControllerClass = AMainMenuPlayerController::StaticClass();
+	DefaultPawnClass = nullptr;
 }
