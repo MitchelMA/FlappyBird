@@ -7,31 +7,27 @@
 #include "GameFramework/Actor.h"
 #include "SlidingBackground.generated.h"
 
-class USpeedComponent;
 
-UCLASS(BlueprintType, Blueprintable)
+UCLASS(Abstract)
 class FLAPPYBIRD_API ASlidingBackground : public AActor
 {
 	GENERATED_BODY()
 
+protected:
 	UPROPERTY(Category=Sprite, EditAnywhere,
 		BlueprintGetter=GetBackgroundSource, BlueprintSetter=SetBackgroundSource)
 	UPaperSprite* BackgroundSource = nullptr;
 
-
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USceneComponent> DefaultSceneRoot = nullptr;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
 	TObjectPtr<USceneComponent> PanelOffset = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPaperSpriteComponent> PanelZero = nullptr;
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UPaperSpriteComponent> PanelOne = nullptr;
 
-	UPROPERTY(Category=Movement, VisibleAnywhere, BlueprintReadOnly, meta=(AllowPrivateAccess=true))
-	TObjectPtr<USpeedComponent> SpeedComponent = nullptr;
-	
 #if WITH_EDITOR
 	virtual void PostEditChangeProperty(FPropertyChangedEvent& e) override;
 #endif // WITH_EDITOR
@@ -70,6 +66,9 @@ public:
 		const auto Extent = PanelZero->GetSprite()->GetRenderBounds().BoxExtent * 2;
 		return {Extent[0], Extent[1]};
 	}
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	virtual double CalcNextProgression(float DeltaTime);
 
 	UFUNCTION(BlueprintCallable)
 	void SetProgression(float NewProgression);

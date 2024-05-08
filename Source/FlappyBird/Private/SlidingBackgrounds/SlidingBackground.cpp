@@ -1,4 +1,4 @@
-#include "SlidingBackground.h"
+#include "SlidingBackgrounds/SlidingBackground.h"
 #include "Components/ScoreSpeedComponent.h"
 
 // Sets default values
@@ -23,7 +23,7 @@ ASlidingBackground::ASlidingBackground()
 	PanelOne->SetupAttachment(PanelOffset);
 	PanelOne->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
-	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UScoreSpeedComponent>(TEXT("SpeedComponent")));
+
 
 	PanelZero->SetGenerateOverlapEvents(false);
 	PanelZero->SetCollisionProfileName(TEXT("NoCollision"));
@@ -69,12 +69,7 @@ ASlidingBackground::Tick(
 )
 {
 	Super::Tick(DeltaTime);
-
-	const auto NextXOffset = PanelOffset->GetRelativeLocation()[0] + DeltaTime * HorizontalDirectionMultiplier * SpeedComponent->GetSpeed();
-	Progression = fabs(NextXOffset) / GetPanelSize()[0];
-	Progression = fmod(Progression, 1);
-
-	SetProgression(Progression);
+	SetProgression(CalcNextProgression(DeltaTime));
 }
 
 
@@ -97,6 +92,14 @@ ASlidingBackground::SetBackgroundSource(
 
 	// reset the current progression
 	SetProgression(0);
+}
+
+double
+ASlidingBackground::CalcNextProgression(
+	float DeltaTime
+)
+{
+	return 0.0;
 }
 
 void
