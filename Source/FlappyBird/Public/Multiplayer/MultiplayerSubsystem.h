@@ -20,7 +20,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCSOnDestroySessionComplete, bool, S
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FCSOnFindSessionComplete, const TArray<FExposedSessionSearchResult>&, SessionResults, bool, Successful);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCSOnJoinSessionComplete, EJoinSessionResult, Result);
 
-UCLASS()
+UCLASS(BlueprintType)
 class FLAPPYBIRD_API UMultiplayerSubsystem : public UGameInstanceSubsystem
 {
 GENERATED_BODY()
