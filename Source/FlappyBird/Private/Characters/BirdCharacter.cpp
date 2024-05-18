@@ -39,19 +39,19 @@ ABirdCharacter::ColliderBeginOverlap(
 	{
 		if (DeathTags.Contains(Name) && !bCastedDeath && !bIsBirdDead)
 		{
-			OnBirdDiedDelegate.Broadcast();
+			OnBirdDied.Broadcast();
 			bCastedDeath = true;
 		}
 
 		if (ObstacleHitTags.Contains(Name) && !bCastedObstacleHit)
 		{
-			OnBirdHitObstacleDelegate.Broadcast();
+			OnBirdHitObstacle.Broadcast();
 			bCastedObstacleHit = true;
 		}
 
 		if (ObstaclePassedTags.Contains(Name) && !bCastedObstaclePass && !bIsBirdDead)
 		{
-			OnBirdPassedObstacleDelegate.Broadcast();
+			OnBirdPassedObstacle.Broadcast();
 			bCastedObstaclePass = true;
 		}
 	}
@@ -73,19 +73,19 @@ ABirdCharacter::ColliderHit(
 	{
 		if (DeathTags.Contains(Name) && !bCastedDeath && !bIsBirdDead)
 		{
-			OnBirdDiedDelegate.Broadcast();
+			OnBirdDied.Broadcast();
 			bCastedDeath = true;
 		}
 
 		if (ObstacleHitTags.Contains(Name) && !bCastedObstacleHit)
 		{
-			OnBirdHitObstacleDelegate.Broadcast();
+			OnBirdHitObstacle.Broadcast();
 			bCastedObstacleHit = true;
 		}
 
 		if (GroundHitTags.Contains(Name) && !bCastedGroundHit)
 		{
-			OnBirdHitGroundDelegate.Broadcast();
+			OnBirdHitGround.Broadcast();
 			bCastedGroundHit = true;
 		}
 	}
@@ -116,12 +116,12 @@ ABirdCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OnBirdStartedDelegate.AddDynamic(this, &ABirdCharacter::BirdStarted);
+	OnBirdStarted.AddDynamic(this, &ABirdCharacter::BirdStarted);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ABirdCharacter::ColliderBeginOverlap);
 	GetCapsuleComponent()->OnComponentHit.AddDynamic(this, &ABirdCharacter::ColliderHit);
 
-	OnBirdDiedDelegate.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdDied);
-	OnBirdHitGroundDelegate.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdHitGround);
+	OnBirdDied.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdDied);
+	OnBirdHitGround.AddDynamic(this, &ABirdCharacter::ABirdCharacter::BirdHitGround);
 
 	if(!GConfig->GetFloat(
 		TEXT("/Script/Engine.PhysicsSettings"),
@@ -172,10 +172,10 @@ ABirdCharacter::Fly(
 	
 	const auto MovementComp = GetMovementComponent();
 	if (!MovementComp->IsActive())
-		OnBirdStartedDelegate.Broadcast();
+		OnBirdStarted.Broadcast();
 
 	LaunchCharacter({0, 0, FlyVelocity}, false, true);
-	OnBirdFlapDelegate.Broadcast();
+	OnBirdFlapped.Broadcast();
 }
 
 void

@@ -8,12 +8,7 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdStartedDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdDiedDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdPassedObstacleDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdHitObstacleDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdHitGroundDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FBirdFlapDelegate);
+
 
 DECLARE_LOG_CATEGORY_EXTERN(LogBirdCharacter, Log, All);
 
@@ -65,20 +60,27 @@ class FLAPPYBIRD_API ABirdCharacter : public APaperCharacter
 	void BirdHitGround();
 
 public:
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBirdStarted);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBirdDied);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBirdPassedObstacle);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBirdHitObstacle);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBirdHitGround);
+    DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnBirdFlapped);
+	
 	ABirdCharacter();
 
 	UPROPERTY(BlueprintAssignable, Category=Events)
-	FBirdStartedDelegate OnBirdStartedDelegate;
+	FOnBirdStarted OnBirdStarted;
 	UPROPERTY(BlueprintAssignable, Category=Events)
-	FBirdDiedDelegate OnBirdDiedDelegate;
+	FOnBirdDied OnBirdDied;
 	UPROPERTY(BlueprintAssignable, Category=Events)
-	FBirdPassedObstacleDelegate OnBirdPassedObstacleDelegate;
+	FOnBirdPassedObstacle OnBirdPassedObstacle;
 	UPROPERTY(BlueprintAssignable, Category=Events)
-	FBirdHitObstacleDelegate OnBirdHitObstacleDelegate;
+	FOnBirdHitObstacle OnBirdHitObstacle;
 	UPROPERTY(BlueprintAssignable, Category=Events)
-	FBirdHitGroundDelegate OnBirdHitGroundDelegate;
+	FOnBirdHitGround OnBirdHitGround;
 	UPROPERTY(BlueprintAssignable, Category=Events)
-	FBirdFlapDelegate OnBirdFlapDelegate;
+	FOnBirdFlapped OnBirdFlapped;
 
 protected:
 	virtual void BeginPlay() override;
