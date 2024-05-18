@@ -11,12 +11,5 @@ class FLAPPYBIRD_API AMultiplayerLobbyGameMode : public AGameMode
 
 public:
 
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerJoined, APlayerController*, PlayerController);
-	
 	AMultiplayerLobbyGameMode();
-
-	UPROPERTY(BlueprintAssignable)
-	FOnPlayerJoined OnPlayerJoinedEvent;
-
-	virtual void PostLogin(APlayerController* NewPlayer) override;
 };
