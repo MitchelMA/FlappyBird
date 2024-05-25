@@ -11,4 +11,6 @@ class FLAPPYBIRD_API AMainMenuGameMode : public AGameModeBase
 
 public:
 	AMainMenuGameMode();
+
+	virtual void BeginPlay() override;
 };
