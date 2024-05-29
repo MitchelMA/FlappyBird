@@ -7,6 +7,7 @@ AScoreDrivenSlidingBackground::AScoreDrivenSlidingBackground()
 	: Super()
 {
 	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UScoreSpeedComponent>(TEXT("SpeedComponent")));
+	SpeedComponent->SetIsReplicated(true);
 }
 
 double

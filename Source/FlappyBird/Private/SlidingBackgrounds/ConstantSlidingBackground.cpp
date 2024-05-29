@@ -8,6 +8,7 @@ AConstantSlidingBackground::AConstantSlidingBackground()
 	: Super()
 {
 	SpeedComponent = Cast<USpeedComponent>(CreateDefaultSubobject<UConstantSpeedComponent>(TEXT("SpeedComponent")));
+	SpeedComponent->SetIsReplicated(true);
 }
 
 double

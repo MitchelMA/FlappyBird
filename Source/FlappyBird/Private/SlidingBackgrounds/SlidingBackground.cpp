@@ -1,17 +1,19 @@
 #include "SlidingBackgrounds/SlidingBackground.h"
-#include "Components/ScoreSpeedComponent.h"
 
 // Sets default values
 ASlidingBackground::ASlidingBackground()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	bReplicates = true;
+	bNetLoadOnClient = false;
 
 	DefaultSceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("DefaultSceneRoot"));
 	RootComponent = DefaultSceneRoot;
 
 	PanelOffset = CreateDefaultSubobject<USceneComponent>(TEXT("Panel Offset"));
 	PanelOffset->SetupAttachment(DefaultSceneRoot);
+	PanelOffset->SetIsReplicated(true);
 
 	PanelZero = CreateDefaultSubobject<UPaperSpriteComponent>(TEXT("Panel_0"));
 	PanelZero->Mobility = EComponentMobility::Movable;
@@ -22,8 +24,6 @@ ASlidingBackground::ASlidingBackground()
 	PanelOne->Mobility = EComponentMobility::Movable;
 	PanelOne->SetupAttachment(PanelOffset);
 	PanelOne->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-
-
 
 	PanelZero->SetGenerateOverlapEvents(false);
 	PanelZero->SetCollisionProfileName(TEXT("NoCollision"));
