@@ -10,10 +10,17 @@ AFlappyBirdGameStateSingle::GetLeadingPlayer()
 	return PlayerArray[0]->GetPlayerController();
 }
 
+bool AFlappyBirdGameStateSingle::IsLeadPlayer(const AController* Player)
+{
+	 return Player == GetLeadingPlayer();
+}
+
 void AFlappyBirdGameStateSingle::OnPlayerStarted(ABirdCharacter* PlayerCharacter)
 {
 	Super::OnPlayerStarted(PlayerCharacter);
 	OnPlayerStartedEvent.Broadcast(PlayerCharacter);
+	OnLeadPlayerStartedEvent.Broadcast(PlayerCharacter);
+	OnAllPlayersStartedEvent.Broadcast();
 }
 
 void
@@ -23,6 +30,7 @@ AFlappyBirdGameStateSingle::OnPlayerDied(
 {
 	Super::OnPlayerDied(PlayerCharacter);
 	OnPlayerDiedEvent.Broadcast(PlayerCharacter);
+	OnLeadPlayerDiedEvent.Broadcast(PlayerCharacter);
 	OnAllPlayersDiedEvent.Broadcast();
 }
 
@@ -33,6 +41,7 @@ AFlappyBirdGameStateSingle::OnPlayerPassedObstacle(
 {
 	Super::OnPlayerPassedObstacle(PlayerCharacter);
 	OnPlayerPassedObstacleEvent.Broadcast(PlayerCharacter);
+	OnLeadPlayerPassedObstacleEvent.Broadcast(PlayerCharacter);
 }
 
 void
@@ -42,6 +51,7 @@ AFlappyBirdGameStateSingle::OnPlayerHitObstacle(
 {
 	Super::OnPlayerHitObstacle(PlayerCharacter);
 	OnPlayerHitObstacleEvent.Broadcast(PlayerCharacter);
+	OnLeadPlayerHitObstacleEvent.Broadcast(PlayerCharacter);
 }
 
 void
@@ -51,6 +61,7 @@ AFlappyBirdGameStateSingle::OnPlayerHitGround(
 {
 	Super::OnPlayerHitGround(PlayerCharacter);
 	OnPlayerHitGroundEvent.Broadcast(PlayerCharacter);
+	OnLeadPlayerHitGroundEvent.Broadcast(PlayerCharacter);
 }
 
 void
@@ -60,4 +71,5 @@ AFlappyBirdGameStateSingle::OnPlayerFlapped(
 {
 	Super::OnPlayerFlapped(PlayerCharacter);
 	OnPlayerFlappedEvent.Broadcast(PlayerCharacter);
+	OnLeadPlayerFlappedEvent.Broadcast(PlayerCharacter);
 }

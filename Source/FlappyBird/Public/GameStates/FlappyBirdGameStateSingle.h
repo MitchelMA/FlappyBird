@@ -9,10 +9,14 @@ class FLAPPYBIRD_API AFlappyBirdGameStateSingle : public AFlappyBirdGameState
 {
 	GENERATED_BODY()
 
+	UPROPERTY()
+	TMap<AController*, ACharacter*> BoundCharacters;
+
 public:
 	AFlappyBirdGameStateSingle();
 
 	virtual AController* GetLeadingPlayer() override;
+	virtual bool IsLeadPlayer(const AController* Player) override;
 
 	virtual void OnPlayerStarted(ABirdCharacter* PlayerCharacter) override;
 	virtual void OnPlayerDied(ABirdCharacter* PlayerCharacter) override;
