@@ -10,12 +10,18 @@ AFlappyBirdGameStateSingle::GetLeadingPlayer()
 	return PlayerArray[0]->GetPlayerController();
 }
 
-bool AFlappyBirdGameStateSingle::IsLeadPlayer(const AController* Player)
+bool
+AFlappyBirdGameStateSingle::IsLeadingPlayer(
+	const AController* Player
+)
 {
 	 return Player == GetLeadingPlayer();
 }
 
-void AFlappyBirdGameStateSingle::OnPlayerStarted(ABirdCharacter* PlayerCharacter)
+void
+AFlappyBirdGameStateSingle::OnPlayerStarted(
+	ABirdCharacter* PlayerCharacter
+)
 {
 	Super::OnPlayerStarted(PlayerCharacter);
 	OnPlayerStartedEvent.Broadcast(PlayerCharacter);

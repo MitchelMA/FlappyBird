@@ -16,7 +16,7 @@ public:
 	AFlappyBirdGameStateSingle();
 
 	virtual AController* GetLeadingPlayer() override;
-	virtual bool IsLeadPlayer(const AController* Player) override;
+	virtual bool IsLeadingPlayer(const AController* Player) override;
 
 	virtual void OnPlayerStarted(ABirdCharacter* PlayerCharacter) override;
 	virtual void OnPlayerDied(ABirdCharacter* PlayerCharacter) override;

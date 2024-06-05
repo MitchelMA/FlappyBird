@@ -110,7 +110,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	virtual AController* GetLeadingPlayer() { return nullptr; }
 	UFUNCTION(BlueprintCallable, BlueprintPure)
-	virtual bool IsLeadPlayer(const AController* Player) { return false; }
+	virtual bool IsLeadingPlayer(const AController* Player) { return false; }
 
 
 protected:
