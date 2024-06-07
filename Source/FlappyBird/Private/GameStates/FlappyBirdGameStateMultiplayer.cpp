@@ -35,7 +35,8 @@ AFlappyBirdGameStateMultiplayer::NotifyPlayerLeft(
 
 	StartedPlayers.Remove(Controller);
 	DeadPlayers.Remove(Controller);
-	CurrentLeadingPlayer = GetNextLeadingPlayer();
+	if (IsLeadingPlayer(Controller))
+		CurrentLeadingPlayer = GetNextLeadingPlayer();
 }
 
 
