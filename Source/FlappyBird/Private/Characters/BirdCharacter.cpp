@@ -6,6 +6,7 @@
 #include "PaperFlipbookComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 DEFINE_LOG_CATEGORY(LogBirdCharacter);
 
@@ -16,9 +17,9 @@ ABirdCharacter::ABirdCharacter()
 }
 
 void
-ABirdCharacter::BirdStarted()
+ABirdCharacter::BirdStarted_Implementation()
 {
-	GetMovementComponent()->Activate();
+	Cast<UCharacterMovementComponent>(GetMovementComponent())->GravityScale = 1.f;
 }
 
 void
@@ -131,8 +132,6 @@ ABirdCharacter::BeginPlay()
 	)
 		UE_LOG(LogBirdCharacter, Error, TEXT("Failed to read terminal velocity"));
 
-	GetMovementComponent()->Deactivate();
-
 	if (const APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -153,8 +152,6 @@ ABirdCharacter::Tick(
 	const auto MovementComp = GetMovementComponent();
 	const auto FallingVelocity = MovementComp->Velocity[2];
 	const auto YRotationPercentage = FallingVelocity / TerminalVelocity;
-	
-	// GEngine->AddOnScreenDebugMessage(-1, .05f, FColor::Orange, FString::Printf(TEXT("Velocity: %f"), FallingVelocity));
 
 	if(const auto SpriteComp = GetSprite())
 		SpriteComp->SetRelativeRotation({YRotationPercentage * VelocityRotationDeg, 0, 0});
@@ -163,15 +160,15 @@ ABirdCharacter::Tick(
 
 
 void
-ABirdCharacter::Fly(
+ABirdCharacter::Fly_Implementation(
 	const FInputActionValue& Value
 )
 {
 	if (bIsBirdDead)
 		return;
-	
-	const auto MovementComp = GetMovementComponent();
-	if (!MovementComp->IsActive())
+
+	const auto MovementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+	if (MovementComp->GravityScale <= 0.0001f)
 		OnBirdStarted.Broadcast();
 
 	LaunchCharacter({0, 0, FlyVelocity}, false, true);

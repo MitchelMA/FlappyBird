@@ -43,7 +43,7 @@ class FLAPPYBIRD_API ABirdCharacter : public APaperCharacter
 	bool bIsBirdDead = false;
 	bool bIsBirdOnGround = false;
 
-	UFUNCTION()
+	UFUNCTION(NetMulticast, Reliable)
 	void BirdStarted();
 	UFUNCTION()
 	void ColliderBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -86,7 +86,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaSeconds) override;
-	
+
+	UFUNCTION(Server, Reliable)
 	void Fly(const FInputActionValue& Value);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
