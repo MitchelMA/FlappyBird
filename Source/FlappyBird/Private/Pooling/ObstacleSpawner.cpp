@@ -40,7 +40,10 @@ AObstacleSpawner::SpawnPipe()
 noexcept
 {
 	if (!IsValid(ObjectPool))
+	{
+		UE_LOG(LogObstacleSpawner, Warning, TEXT("No Obstacle pool found in level"));
 		return nullptr;
+	}
 
 	const auto Pipe = Cast<APipeObstacle>(ObjectPool->RequestObject(GetActorLocation()));
 

@@ -29,7 +29,10 @@ AObstacleCleaner::OnCleanTrigger(
 
 	
 	if (!IsValid(ObjectPool))
+	{
 		UE_LOG(LogObstacleCleaner, Warning, TEXT("No reference was set for the ObjectPool"));
+		return;
+	}
 
 	if (!ObjectPool->StoreObject(OtherActor))
 		UE_LOG(LogObstacleCleaner, Warning,
