@@ -89,6 +89,10 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void Fly(const FInputActionValue& Value);
+	UFUNCTION(Client, Reliable)
+	void BroadcastFlap();
+	UFUNCTION(Server, Reliable)
+	void BroadcastStarted();
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 

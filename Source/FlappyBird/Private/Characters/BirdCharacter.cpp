@@ -169,11 +169,24 @@ ABirdCharacter::Fly_Implementation(
 
 	const auto MovementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
 	if (MovementComp->GravityScale <= 0.0001f)
-		OnBirdStarted.Broadcast();
+		BroadcastStarted();
 
 	LaunchCharacter({0, 0, FlyVelocity}, false, true);
+	BroadcastFlap();
+}
+
+void
+ABirdCharacter::BroadcastFlap_Implementation()
+{
 	OnBirdFlapped.Broadcast();
 }
+
+void
+ABirdCharacter::BroadcastStarted_Implementation()
+{
+	OnBirdStarted.Broadcast();
+}
+
 
 void
 ABirdCharacter::SetupPlayerInputComponent(
