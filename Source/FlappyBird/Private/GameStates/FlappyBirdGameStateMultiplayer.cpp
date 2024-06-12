@@ -60,15 +60,22 @@ AFlappyBirdGameStateMultiplayer::OnPlayerStarted(
 )
 {
 	Super::OnPlayerStarted(PlayerCharacter);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Player Started"));
 	
 	StartedPlayers.Add(PlayerCharacter->Controller);
 	OnPlayerStartedEvent.Broadcast(PlayerCharacter);
 
 	if (IsLeadingPlayer(PlayerCharacter->Controller))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Lead Player Started"));
 		OnLeadPlayerStartedEvent.Broadcast(PlayerCharacter);
+	}
 	
 	if (StartedPlayers.Num() == PlayerArray.Num())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("All Players Have Started"));
 		OnAllPlayersStartedEvent.Broadcast();
+	}
 }
 
 void
@@ -133,12 +140,16 @@ AFlappyBirdGameStateMultiplayer::OnPlayerFlapped(
 	ABirdCharacter* PlayerCharacter
 )
 {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Player Flapped"));
 	Super::OnPlayerFlapped(PlayerCharacter);
 
 	OnPlayerFlappedEvent.Broadcast(PlayerCharacter);
 
 	if (IsLeadingPlayer(PlayerCharacter->Controller))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Emerald, TEXT("Lead Player Flapped"));
 		OnLeadPlayerFlappedEvent.Broadcast(PlayerCharacter);
+	}
 }
 
 AController*

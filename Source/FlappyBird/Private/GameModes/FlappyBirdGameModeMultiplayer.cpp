@@ -22,14 +22,20 @@ AFlappyBirdGameModeMultiplayer::AFlappyBirdGameModeMultiplayer()
 		UsedSpawnPoints.Add(PlayerStart, false);
 }
 
-void AFlappyBirdGameModeMultiplayer::PostLogin(APlayerController* NewPlayer)
+void
+AFlappyBirdGameModeMultiplayer::PostLogin(
+	APlayerController* NewPlayer
+)
 {
 	Super::PostLogin(NewPlayer);
 
 	Cast<AFlappyBirdGameState>(GameState)->NotifyPlayerJoined(NewPlayer);
 }
 
-void AFlappyBirdGameModeMultiplayer::Logout(AController* Exiting)
+void
+AFlappyBirdGameModeMultiplayer::Logout(
+	AController* Exiting
+)
 {
 	Super::Logout(Exiting);
 

@@ -62,4 +62,9 @@ private:
 	ABirdCharacter::FOnBirdHitObstacle::FDelegate       OnBirdHitObstacleDelegate;
 	ABirdCharacter::FOnBirdHitGround::FDelegate           OnBirdHitGroundDelegate;
 	ABirdCharacter::FOnBirdFlapped::FDelegate               OnBirdFlappedDelegate;
+
+	UFUNCTION(Server, Reliable)
+	void BindEvents();
+	UFUNCTION(Server, Reliable)
+	void UnBindEvents();
 };
