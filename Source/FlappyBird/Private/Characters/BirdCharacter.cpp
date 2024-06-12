@@ -52,7 +52,7 @@ ABirdCharacter::ColliderBeginOverlap(
 
 		if (ObstaclePassedTags.Contains(Name) && !bCastedObstaclePass && !bIsBirdDead)
 		{
-			OnBirdPassedObstacle.Broadcast();
+			BroadcastPassedObstacle();
 			bCastedObstaclePass = true;
 		}
 	}
@@ -185,6 +185,12 @@ void
 ABirdCharacter::BroadcastStarted_Implementation()
 {
 	OnBirdStarted.Broadcast();
+}
+
+void
+ABirdCharacter::BroadcastPassedObstacle_Implementation()
+{
+	OnBirdPassedObstacle.Broadcast();
 }
 
 

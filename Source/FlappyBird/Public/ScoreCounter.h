@@ -38,7 +38,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
 	void IncreaseScore(int64 Amount = 1);
 	
 	UFUNCTION(BlueprintCallable, BlueprintPure)

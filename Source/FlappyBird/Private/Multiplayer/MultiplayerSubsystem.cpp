@@ -31,6 +31,7 @@ UMultiplayerSubsystem::CreateGameSession(
 
 	LastSessionSettings = MakeShareable(new FOnlineSessionSettings());
 	LastSessionSettings->NumPublicConnections = NumPublicConnections;
+	LastSessionSettings->NumPrivateConnections = 0;
 	LastSessionSettings->bAllowInvites = true;
 	LastSessionSettings->bAllowJoinInProgress = true;
 	LastSessionSettings->bAllowJoinViaPresence = true;

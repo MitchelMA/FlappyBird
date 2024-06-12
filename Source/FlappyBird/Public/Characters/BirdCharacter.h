@@ -87,12 +87,14 @@ protected:
 
 	virtual void Tick(float DeltaSeconds) override;
 
-	UFUNCTION(Server, Reliable)
+	UFUNCTION(Server, UnReliable)
 	void Fly(const FInputActionValue& Value);
 	UFUNCTION(NetMulticast, Reliable)
 	void BroadcastFlap();
 	UFUNCTION(NetMulticast, Reliable)
 	void BroadcastStarted();
+	UFUNCTION(NetMulticast, Reliable)
+	void BroadcastPassedObstacle();
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 

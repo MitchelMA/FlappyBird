@@ -37,7 +37,7 @@ AScoreCounter::Tick(
 }
 
 void
-AScoreCounter::IncreaseScore(
+AScoreCounter::IncreaseScore_Implementation(
 	const int64 Amount
 )
 {
