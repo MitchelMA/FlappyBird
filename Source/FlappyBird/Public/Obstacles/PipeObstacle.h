@@ -37,7 +37,7 @@ class FLAPPYBIRD_API APipeObstacle : public AActor
 	FVector2D DirectionMultiplier = {-1, 0};
 
 	UPROPERTY(Category=Positioning, EditAnywhere,
-		BlueprintGetter=GetGapHeight, BlueprintSetter=SetGapHeight)
+		BlueprintGetter=GetGapHeight)
 	float GapHeight = 50.f;
 
 	UPROPERTY(Category=Positioning, EditAnywhere)
@@ -98,11 +98,11 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetGapHeight() const { return GapHeight; }
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
 	void SetGapHeight(float NewGapHeight);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE float GetHeightOffset() const { return HeightOffset; }
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
 	void SetHeightOffset(float NewHeightOffset);
 };

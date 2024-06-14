@@ -186,7 +186,7 @@ const
 }
 
 void
-APipeObstacle::SetGapHeight(
+APipeObstacle::SetGapHeight_Implementation(
 	const float NewGapHeight
 )
 {
@@ -202,7 +202,7 @@ APipeObstacle::SetGapHeight(
 }
 
 void
-APipeObstacle::SetHeightOffset(
+APipeObstacle::SetHeightOffset_Implementation(
 	const float NewHeightOffset
 )
 {
