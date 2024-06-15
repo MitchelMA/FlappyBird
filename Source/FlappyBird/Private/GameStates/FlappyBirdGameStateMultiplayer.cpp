@@ -3,6 +3,8 @@
 
 #include "GameStates/FlappyBirdGameStateMultiplayer.h"
 
+#include "Kismet/KismetSystemLibrary.h"
+
 AFlappyBirdGameStateMultiplayer::AFlappyBirdGameStateMultiplayer()
 {
 	OnLeadPlayerDiedDelegate.BindDynamic(this, &ThisClass::OnLeadPlayerDied);
@@ -164,9 +166,7 @@ AFlappyBirdGameStateMultiplayer::GetNextLeadingPlayer()
 		if (Controller == nullptr)
 			continue;
 
-		if (NextLead != Controller &&
-			!DeadPlayers.Contains(Controller) &&
-			NextLead != OldLead)
+		if (!DeadPlayers.Contains(Controller))
 		{
 			NextLead = Controller;
 			return NextLead;

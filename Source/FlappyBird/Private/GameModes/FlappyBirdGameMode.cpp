@@ -6,7 +6,7 @@
 AFlappyBirdGameMode::AFlappyBirdGameMode()
 {
 	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/FlappyBird/Blueprints/BP_BirdCharacter"));
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/FlappyBird/Blueprints/Characters/BP_BirdCharacter"));
 	if (PlayerPawnBPClass.Class)
 		DefaultPawnClass = PlayerPawnBPClass.Class;
 }

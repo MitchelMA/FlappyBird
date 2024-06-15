@@ -27,3 +27,11 @@ USpeedComponent::GetSpeed()
 	UE_LOG(LogSpeedComponent, Error, TEXT("IMPLEMENTATION NOT DEFINED: There's no implementation of GetSpeed()"));
 	return 0.;
 }
+
+void
+USpeedComponent::SetIsSpeedDisabled_Implementation(
+	const bool IsDisabled
+)
+{
+	bIsSpeedDisabled = IsDisabled;
+}

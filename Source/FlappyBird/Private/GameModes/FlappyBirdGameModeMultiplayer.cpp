@@ -8,6 +8,10 @@
 AFlappyBirdGameModeMultiplayer::AFlappyBirdGameModeMultiplayer()
 	: Super()
 {
+	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/FlappyBird/Blueprints/Characters/BP_BirdCharacterMulti"));
+	if (PlayerPawnBPClass.Class)
+		DefaultPawnClass = PlayerPawnBPClass.Class;
+	
 	GameStateClass = AFlappyBirdGameStateMultiplayer::StaticClass();
 	PlayerStateClass = AFlappyBirdPlayerState::StaticClass();
 

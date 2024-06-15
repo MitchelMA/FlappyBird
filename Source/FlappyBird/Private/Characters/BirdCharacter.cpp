@@ -143,9 +143,11 @@ ABirdCharacter::BeginPlay()
 
 void
 ABirdCharacter::Tick(
-	float DeltaSeconds
+	const float DeltaSeconds
 )
 {
+	Super::Tick(DeltaSeconds);
+	
 	if (bIsBirdOnGround)
 		return;
 	

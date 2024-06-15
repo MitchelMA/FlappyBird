@@ -22,7 +22,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere, Category=SpeedSettings,
-		BlueprintGetter=GetIsSpeedDisabled, BlueprintSetter=SetIsSpeedDisabled)
+		BlueprintGetter=GetIsSpeedDisabled)
 	bool bIsSpeedDisabled = false;
 
 public:	
@@ -34,6 +34,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	FORCEINLINE bool GetIsSpeedDisabled() const noexcept { return bIsSpeedDisabled; }
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE void SetIsSpeedDisabled(const bool IsDisabled) { bIsSpeedDisabled = IsDisabled; }
+	UFUNCTION(BlueprintCallable, NetMulticast, Reliable)
+	void SetIsSpeedDisabled(const bool IsDisabled);
 };
